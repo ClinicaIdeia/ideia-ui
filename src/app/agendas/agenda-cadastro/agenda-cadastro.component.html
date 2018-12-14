@@ -1,0 +1,75 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+          <h1 style="margin-top: 5px;">
+              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição de' : 'Nova' }} Agenda</h1>
+      </div>
+
+      <div class="ui-g-6 ui-md-2 ui-fluid">
+        <label>Data Agenda</label>
+        <p-calendar name="diaAgenda" dateFormat="dd/mm/yy" [inline]="false" [readonlyInput]="false" [showIcon]="false"
+          [(ngModel)]="agenda.diaAgenda" #diaAgenda="ngModel" required></p-calendar>
+
+        <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="agenda.observacao"></textarea>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Nova" class="ui-button-info" (click)="novo(f)"></button>
+        <a routerLink="/agendas">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="ui-g">
+
+    <div class="ui-g-12">
+      <hr>
+      <h3>Horários</h3>
+    </div>
+
+    <div class="ui-g-12 ui-md-2 ui-fluid">
+      <label>Horário</label>
+      <p-inputMask mask="99:99" type="text" name="horaExame" [(ngModel)]="horario.horaExame">
+      </p-inputMask>
+    </div>
+
+    <div class="ui-g-12 ui-md-2 ui-fluid">
+      <label>Max. Exames por Horário.</label>
+      <input pInputText type="number" name="maximoPermitido" [(ngModel)]="horario.maximoPermitido" />
+    </div>
+
+    <div class="ui-g-12 ui-md-3 ui-fluid" style="margin-top: 18px;">
+      <button pButton icon="fa-plus" pTooltip="Add Horário" tooltipPosition="top" [disabled]="!agenda.diaAgenda|| !horario.horaExame|| !horario.maximoPermitido"
+        (click)="adicionaHorario(horario)"></button>
+    </div>
+
+    <div class="ui-g-12">
+
+      <p-dataTable [value]="agenda.horarios" [paginator]="true" [rows]="5" [responsive]="true">
+        <p-column field="horaExame" header="Horário"></p-column>
+        <p-column field="maximoPermitido" header="Máximo Permitido"></p-column>
+        <p-column field="restante" header="Qtd. Restantes"></p-column>
+
+        <p-column styleClass="col-acoes">
+          <ng-template pTemplate="body" let-hor="rowData">
+            <!-- <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/empresas', func.codigo]"></a> -->
+            <button pButton icon="fa-trash" pTooltip="Remover Horário" tooltipPosition="top" (click)="removerHorario(hor)">
+            </button>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+
+    </div>
+
+  </div>
+
+</div>

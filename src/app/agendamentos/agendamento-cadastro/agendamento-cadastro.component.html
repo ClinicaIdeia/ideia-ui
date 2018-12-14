@@ -1,0 +1,57 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+          <h1 style="margin-top: 5px;">
+            <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição de' : 'Novo' }} Agendamento</h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Motivo</label>
+        <p-dropdown name="motivo"
+                    [options]="motivos"
+                    placeholder="Selecione"
+                    [autoWidth]="false"
+                    [filter]="true"
+                    (onChange)="filtraMotivos($event)"
+                    [(ngModel)]="agendamento.motivo.codigo">
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Datas disponíveis</label>
+        <p-dropdown name="agendas" [options]="agendas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.agenda.codigo"
+          (onChange)="onChange($event)"
+          ></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Hora</label>
+        <p-dropdown name="horarios" [options]="horarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.codHorario"
+          (onChange)="selectHorario($event)"
+          ></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Funcionário</label>
+        <p-dropdown name="funcionario" [options]="funcionarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.funcionario.codigo"></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="agendamento.observacao"></textarea>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info" (click)="novo(f)"></button>
+        <a routerLink="/agendamentos">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>
