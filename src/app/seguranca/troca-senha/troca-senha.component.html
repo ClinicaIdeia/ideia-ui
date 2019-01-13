@@ -1,0 +1,33 @@
+<div class="container" style="max-width: 40%;">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>Nova Senha</label>
+        <input pInputText type="password" name="senhaNova" [(ngModel)]="senhaAlterar.senhaNova" ngModel #senhaNova="ngModel"
+          required minlength="6" />
+        <app-message [control]="senhaNova" error="required" text="Informe a nova senha do usuário"></app-message>
+        <app-message [control]="senhaNova" error="minlength" text="Mínimo de {{ senhaNova?.errors?.minlength?.requiredLength }} caracteres. Você digitou apenas: {{ senhaNova?.errors?.minlength?.actualLength }}">
+        </app-message>
+
+      </div>
+
+      <div class="ui-g-12 ui-md-12 ui-fluid">
+        <label>Confirmação</label>
+        <input pInputText type="password" name="confirmacao" [(ngModel)]="senhaAlterar.confirmacao" ngModel
+          #confirmacao="ngModel" required minlength="6" />
+
+        <app-message [control]="confirmacao" error="required" text="Informe a senha de confirmação do usuário"></app-message>
+        <app-message [control]="confirmacao" error="minlength" text="Mínimo de {{ confirmacao?.errors?.minlength?.requiredLength }} caracteres. Você digitou apenas: {{ senhaNova?.errors?.minlength?.actualLength }}">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Atualizar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Cancelar" class="ui-button-info" (click)="canceled(f)"></button>
+      </div>
+    </div>
+
+  </form>
+</div>

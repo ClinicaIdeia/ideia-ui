@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+          <h1 style="margin-top: 5px;">
+              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Funcionários</h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Nome</label>
+        <input pInputText type="text" name="nome" [(ngModel)]="nome" />
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+
+        <label>CPF</label>
+        <input pInputText type="text" name="cpf" [(ngModel)]="cpf" />
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+
+        <label>Telefone</label>
+        <input pInputText type="text" name="telefone" [(ngModel)]="telefone" />
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+
+      <p-dataTable [value]="funcionarios" [paginator]="true" [rows]="5" [responsive]="true">
+        <p-column field="nome" header="Nome"></p-column>
+        <p-column field="cpf" mask="999.999.999-99" header="CPF"></p-column>
+        <p-column field="matricula" header="Matricula"></p-column>
+        <p-column field="rg" header="RG"></p-column>
+        <p-column field="telefone" header="Telefone"></p-column>
+        <p-column field="cargo" header="Cargo"></p-column>
+        <p-column styleClass="col-acoes">
+          <ng-template pTemplate="body" let-func="rowData">
+            <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/funcionarios', func.codigo]"></a>
+            <!-- <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="excluir()" [disabled]="!auth.temPermissao('ROLE_REMOVER_FUNCIONARIO')"></button> -->
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Novo Funcionário" routerLink="/funcionarios/novo"></a>
+    </div>
+
+  </div>
+
+</div>

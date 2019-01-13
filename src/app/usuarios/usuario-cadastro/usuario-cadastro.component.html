@@ -1,0 +1,100 @@
+<div class="container" *ngIf="salvando" style="margin-top: 20%; position: absolute; margin-left: 50%; z-index: 5;">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
+<p-blockUI [target]="painel" [blocked]="salvando">
+  <i class="fa fa-lock fa-5x" style="position:absolute;top:25%;left:50%"></i>
+</p-blockUI>
+
+<div class="container" id="painel" style="z-index: 1; position: relative;">
+
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+
+      <div class="ui-g-12 ui-fluid">
+        <h1 style="margin-top: 5px;">
+          <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">
+          {{ editando ? 'Edição de' : 'Novo'}} Usuário
+        </h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Nome</label>
+        <!-- {{ razao.errors  | json }} debugar erro -->
+        <input pInputText type="text" name="nome" [(ngModel)]="usuario.nome" ngModel #nome="ngModel" required minlength="5" />
+
+        <app-message [control]="nome" error="required" text="Informe o nome do usuário"></app-message>
+        <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome?.errors?.minlength?.requiredLength }} caracteres. Você digitou apenas: {{ nome?.errors?.minlength?.actualLength }}">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>E-mail</label>
+        <input pInputText type="email" name="email" required email [(ngModel)]="usuario.email" #userEmail="ngModel" />
+        <app-message [control]="userEmail" error="email" text="Informe um e-mail válido"></app-message>
+      </div>
+
+      <!-- <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN')">
+        <label>Usuário examinador ? </label>
+        <p-checkbox [(ngModel)]="usuario.examinador" name="examinador" binary="true"></p-checkbox>
+      </div>
+
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN') && usuario.examinador">
+        <label>Conselho</label>
+        <p-dropdown name="conselho" [options]="conselhos" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="usuario.conselho" ngModel #conselho="ngModel"></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN') && usuario.examinador">
+        <label>Número Conselho</label>
+        <input pInputText type="numeroConselho" name="numeroConselho" [(ngModel)]="usuario.numeroConselho" />
+      </div> -->
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Empresa</label>
+        <p-dropdown name="empresa" [options]="empresas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="usuario.empresa.codigo" ngModel #empresa="ngModel" required></p-dropdown>
+        <app-message [control]="empresa" error="required" text="O campo Empresa é obrigatório"></app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <button [disabled]="permissoesSelecionadas.length === 0" style="margin-top: 18px;" pButton type="button"
+          pTooltip="Permissões" (click)="loadPermissoes()" icon="fa-exclamation"></button>
+      </div>
+
+      <div class="ui-g" *ngIf="usuario.nome && usuario.email && permissoes.length > 0">
+        <div class="ui-g-12">
+          <label>Permissões</label>
+
+          <p-dataTable [value]="permissoes" [paginator]="true" [rows]="5" [responsive]="true">
+            <p-column field="codigo" header="Código"></p-column>
+            <p-column field="descricao" header="Descrição"></p-column>
+
+            <p-column styleClass="col-acoes">
+              <ng-template pTemplate="body" let-permissao="rowData">
+                <button pButton type="button" pTooltip="Add permissão ao usuário" (click)="addPermissao(permissao)"
+                  icon="fa-plus"></button>
+              </ng-template>
+            </p-column>
+          </p-dataTable>
+
+        </div>
+      </div>
+
+      <p-sidebar [(visible)]="sideBarPermissoes" position="right" [baseZIndex]="10000">
+        <h1 style="font-weight:normal">Permissões Usuário</h1>
+        <p-dataTable [value]="permissoesAdicionadas" [responsive]="true">
+          <p-column field="descricao" header="Permissao"></p-column>
+        </p-dataTable>
+      </p-sidebar>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info" (click)="novo(f)"></button>
+        <a routerLink="/usuarios">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>

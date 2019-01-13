@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+          <h1 style="margin-top: 5px;">
+              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Agendamentos</h1>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Empresa</label>
+        <input pInputText type="text" name="emprsa" [(ngModel)]="filtro.empresa">
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Funcionario</label>
+        <input pInputText type="text" name="funcionario" [(ngModel)]="filtro.funcionario">
+      </div>
+
+      <div class="ui-g-12">
+        <label style="display: block">Agendamentos de: </label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" name="dataLaudoDe" [(ngModel)]="filtro.dataLaudoDe"></p-calendar>
+
+        <label>até</label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" name="dataLaudoAte" [(ngModel)]="filtro.dataLaudoAte"></p-calendar>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <input pInputText type="text" name="observacao" [(ngModel)]="filtro.observacao">
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+  </div>
+
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+
+      <p-dataTable [value]="laudos" [paginator]="true" [rows]="5" [responsive]="true">
+        <p-column field="codigo" header="Codigo"></p-column>
+        <p-column field="funcionario.nome" header="Func"></p-column>
+        <p-column field="observacao" header="Observação"></p-column>
+
+        <p-column styleClass="col-acoes2" header="Ações">
+            <ng-template pTemplate="body" let-laudo="rowData">
+              
+              <a pButton icon="fa-print" pTooltip="Imprimir Laudo" tooltipPosition="top" (click)="gerarLaudo(laudo.codigo)"></a>
+            
+              <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(laudo)"
+                      *ngIf="auth.temPermissao('ROLE_ADMIN')"></button>
+            </ng-template>
+          </p-column>
+       
+      </p-dataTable>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Nova Laudo" routerLink="/laudos/novo"></a>
+    </div>    
+
+  </div>
+
+</div>

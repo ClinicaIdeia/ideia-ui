@@ -1,0 +1,33 @@
+<div class="container" *ngIf="salvando" style="margin-top: 20%; position: absolute; margin-left: 50%; z-index: 5;">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
+<p-blockUI [target]="painel" [blocked]="salvando">
+  <i class="fa fa-lock fa-5x" style="position:absolute;top:25%;left:50%"></i>
+</p-blockUI>
+
+<div class="container" id="painel" style="max-width: 400px; margin: auto">
+
+  <form autocomplete="off" #f="ngForm">
+    <div class="ui-g ui-fluid">
+
+      <div class="ui-g-12">
+        <h1>Recuração de senha</h1>
+        <p>Informa abaixo o seu e-mail para envio de nova senha.</p>
+      </div>
+
+      <div class="ui-g-12">
+        <input pInputText type="email" name="usuario" placeholder="E-mail"
+          [(ngModel)]="reset.email"
+          ngModel required #usuario>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Enviar" [disabled]="!f.valid"
+          (click)="resetSenha()"></button>
+      </div>
+
+    </div>
+  </form>
+
+</div>

@@ -1,0 +1,182 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1 style="margin-top: 5px;">
+          <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição
+          de' : 'Novo' }} Laudo</h1>
+      </div>
+
+      <p-panel class="Panel">
+        <p-header>
+          <div class="ui-helper-clearfix">
+            <label class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Identificação da
+              Clínica</label>
+          </div>
+        </p-header>
+
+        <div class="ui-grid ui-grid-responsive">
+          <div class="ui-grid-row">
+            <!-- <div class="ui-grid-col-12"><img src="assets/logo_ideia.png" width="60"></div> -->
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <label>
+                Nome:
+              </label> IDEIA - Instituto de Desenvolvimento Empresarial e Individual Assessorado S/C Ltda
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <label>
+                Endereço:
+              </label>Rua Francisco Sales, 1341
+            </div>
+            <div class="ui-grid-col-12">
+              <label>
+                Cidade:
+              </label>
+              Uberlândia - <label> CEP:</label> 38400-440 <label> UF:</label> MG
+            </div>
+            <div class="ui-grid-col-12">
+              <label>
+                Responsável Técnico:
+              </label> Aparecida Nilza Marquez Ferreira
+            </div>
+          </div>
+
+        </div>
+
+      </p-panel>
+      <br />
+
+      <p-panel class="Panel">
+        <p-header>
+          <div class="ui-helper-clearfix">
+            <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Identificação
+              Funcionário</span>
+             </div>
+        </p-header>
+
+        <div class="ui-grid ui-grid-responsive">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12"><img src="assets/logo_ideia.png" width="60"></div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <label>Nome:</label>
+              {{laudo.funcionario.nome}}
+            </div>
+            <div class="ui-grid-col-6">
+              <label>Sexo:</label>
+              {{laudo.funcionario.sexo}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <label>Estado Civil:</label>
+              {{laudo.funcionario.estadoCivil}}
+            </div>
+            <div class="ui-grid-col-6">
+              <label>Escolaridade:</label>
+              {{laudo.funcionario.escolaridade}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <label>Idade:</label>
+              {{laudo.funcionario?.idade}}
+            </div>
+            <div class="ui-grid-col-6">
+              <label>CPF:</label>
+              {{laudo.funcionario.cpf}}
+            </div>
+          </div>
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <label>Profissão:</label>
+              {{laudo.funcionario.cargo}}
+            </div>
+            <div class="ui-grid-col-6">
+              <label>Data da Avaliação:</label>
+              {{laudo.dataExame}}
+            </div>
+          </div>
+        </div>
+      </p-panel>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="laudo.observacao"></textarea>
+      </div>
+
+      <p-panel class="Panel">
+        <p-header>
+          <div class="ui-helper-clearfix">
+            <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Aptidões do
+              Funcionário</span>
+          </div>
+        </p-header>
+
+        <div class="ui-grid ui-grid-responsive">
+
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+              <div class="ui-g">
+                <div class="ui-g-12">
+
+                  <p-dataTable [value]="laudo.aptidoes" [paginator]="false" [responsive]="true">
+
+                    <p-column styleClass="col-acoes" header="Apto ?">
+                      <ng-template pTemplate="body" let-aptd="rowData">
+                        <p-checkbox [(ngModel)]="aptd.apto" name="apto" binary="true">
+                        </p-checkbox>
+                      </ng-template>
+                    </p-column>
+
+                    <p-column field="descricao" header="Descrição"></p-column>
+
+                  </p-dataTable>
+
+                </div>
+
+               </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p-footer>
+          <button pButton type="button" icon="fa-plus" label="Inserir Nova Aptidão" (click)="showDialog()" class="ui-button-info" 
+                  *ngIf="laudo.aptidoes && laudo.aptidoes.length < 3"></button>
+          <button pButton type="button" icon="fa-list" label="View" class="ui-button-success"></button>
+        </p-footer>
+      </p-panel>
+
+      <p-dialog header="Nova aptidão" 
+                [(visible)]="display" 
+                modal="modal"                 
+                width="300" [responsive]="true">
+
+        <div class="ui-g">
+
+          <div class="ui-g-12 ui-fluid">
+            <label>Descrição</label>
+            <textarea pInputTextarea rows="2" name="newAptidaoDescricao" [(ngModel)]="newAptidao.descricao"></textarea>
+          </div>
+        </div>
+        <p-footer>
+          <button type="button" pButton icon="fa-check" (click)="addNewAptidao()" label="Confirma"></button>
+          <button type="button" pButton icon="fa-close" (click)="cancelNewAptidao()" label="Cancelar"></button>
+        </p-footer>
+      </p-dialog>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Gerar Laudo" [disabled]="f.invalid"></button>
+        <a routerLink="/laudos">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>

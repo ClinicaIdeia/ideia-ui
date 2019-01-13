@@ -1,0 +1,81 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+          <h1 style="margin-top: 5px;">
+            <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição de' : 'Novo' }} Agendamento</h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Motivo</label>
+        <p-dropdown name="motivo"
+                    [options]="motivos"
+                    placeholder="Selecione"
+                    [autoWidth]="false"
+                    [filter]="true"
+                    (onChange)="filtraMotivos(f)"
+                    [(ngModel)]="agendamento.motivo.codigo">
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="!agendamento.avulso">
+        <label>Datas disponíveis</label>
+        <p-dropdown name="agendas" [options]="agendas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.agenda.codigo"
+          (onChange)="onChange($event)"
+          ></p-dropdown>
+      </div>
+
+      <div class="ui-g-6 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+        <label>Data Agenda</label>
+        <p-calendar name="diaAgenda" dateFormat="dd/mm/yy" [inline]="false" [readonlyInput]="false" [showIcon]="false"
+          [(ngModel)]="agenda.diaAgenda" #diaAgenda="ngModel" required></p-calendar>
+
+        <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="!agendamento.avulso">
+        <label>Horário</label>
+        <p-dropdown name="horarios" [options]="horarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.codHorario"
+          (onChange)="selectHorario($event)"
+          ></p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+        <label>Horário</label>
+          <p-inputMask mask="99:99" type="text" name="horaExame" [(ngModel)]="horario.horaExame">
+        </p-inputMask>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Funcionário</label>
+        <p-dropdown name="funcionario" [options]="funcionarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
+          [(ngModel)]="agendamento.funcionario.codigo"></p-dropdown>
+      </div>
+
+      <div class="ui-g-12">
+        <label>Trabalho armado ?</label>
+          <p-checkbox [(ngModel)]="agendamento.trabalhoArmado" name="trabalhoArmado" binary="true"></p-checkbox>
+      </div>
+      
+      <div class="ui-g-12 ui-fluid">
+        <label>Observação</label>
+        <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="agendamento.observacao"></textarea>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info" (click)="novo(f)"></button>
+        <button pButton type="button" 
+                label="Avulso" 
+                class="ui-button-warning"  
+                (click)="agendamento.avulso = !agendamento.avulso"
+                *ngIf="auth.temPermissao('ROLE_ADMIN')"></button>
+        <a routerLink="/agendamentos">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>
