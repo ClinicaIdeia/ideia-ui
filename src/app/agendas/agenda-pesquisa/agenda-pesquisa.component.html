@@ -36,10 +36,25 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable [value]="agendas" [responsive]="true" emptyMessage="Nenhum Agenda encontrado" [paginator]="true"
-        [rows]="filtro.itensPorPagina" [lazy]="true" (onLazyLoad)="aoMudarPagina($event)"
-        #tabela>
+      <p-dataTable  [value]="agendas" 
+                    [responsive]="true" 
+                    expandableRows="true" 
+                    emptyMessage="Nenhuma Agenda encontrada" 
+                    [paginator]="true"
+                    [rows]="filtro.itensPorPagina" 
+                    [lazy]="true" 
+                    exportFilename="agendas"
+                    (onLazyLoad)="aoMudarPagina($event)"
+                    #tabela>
 
+        <!-- <p-header>
+            <div class="ui-helper-clearfix">
+                <button type="button" pButton icon="fa-file-o" iconPos="left" label="All Data" (click)="tabela.exportCSV()" style="float:left"></button>
+                <button type="button" pButton icon="fa-file" iconPos="left" label="Selection Only" (click)="dt.exportCSV({selectionOnly:true})" style="float:right"></button>
+            </div>
+        </p-header> -->
+
+        <p-column expander="true" styleClass="col-icon MaxExpand" header="Ver horários"></p-column>
         <p-column header="Data da Agenda" styleClass="col-data-agenda">
           <ng-template let-age="rowData" pTemplate="body">
             <span>{{ age.diaAgenda | date:'dd/MM/yyyy' }}</span>
@@ -51,20 +66,48 @@
         <p-column styleClass="col-acoes">
           <ng-template let-age="rowData" pTemplate="body">
             <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/agendas', age.codigo]"></a>
+            
+            <button pButton icon="fa-copy" pTooltip="Copiar agenda" tooltipPosition="top" (click)="showDialog(age)"
+              [disabled]="!auth.temPermissao('ROLE_ADMIN')"></button>
 
-            <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(age)"
-              [disabled]="!auth.temPermissao('ROLE_REMOVER_AGENDAMENTO')"></button>
+              <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(age)"
+              [disabled]="!auth.temPermissao('ROLE_ADMIN')"></button>
 
-            <button pButton icon="fa-file" pTooltip="Laudo" tooltipPosition="top" (click)="confirmarExclusao(age)"
-              [disabled]="!auth.temPermissao('ROLE_PESQUISAR_LAUDO')"></button>
           </ng-template>
         </p-column>
+        <ng-template let-agen pTemplate="rowexpansion">
+          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-grid-row">
+                   <p-dataTable [value]="agen.horarios" [loading]="false">
+                      <p-column field="horaExame" header="Horário"></p-column>
+                      <p-column field="maximoPermitido" header="Max"></p-column>
+                  </p-dataTable>
+              </div>
+          </div>
+      </ng-template>
       </p-dataTable>
     </div>
 
     <div class="ui-g-12">
       <a pButton label="Nova Agenda" routerLink="/agendas/novo"></a>
     </div>
+
+    <p-dialog header="Copia de agenda" [(visible)]="display" modal="modal" width="900" [responsive]="true">
+      
+      <div class="ui-g-6 ui-md-2 ui-fluid" style="min-height: 400px;">
+        <label>Cópia Agenda</label>
+        <p-calendar [(ngModel)]="rangeDates" 
+                    dateFormat="dd/mm/yy" 
+                    name="rangeDatesAgenda" 
+                    selectionMode="range" 
+                    readonlyInput="true"></p-calendar>
+
+      </div>
+  
+      <p-footer>
+          <button type="button" pButton icon="fa-close" (click)="clonaAgenda()" label="Confirmar"></button>
+      </p-footer>
+    </p-dialog>
 
   </div>
 

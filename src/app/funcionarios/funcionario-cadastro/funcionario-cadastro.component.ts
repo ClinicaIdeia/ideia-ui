@@ -30,23 +30,23 @@ export class FuncionarioCadastroComponent implements OnInit {
   ];
 
   estadosCivis = [
-    { label: 'Solteiro(a)', value: 'SOLTEIRO_A' },
-    { label: 'Casado(a)', value: 'CASADO_A' },
-    { label: 'Divorciado(a)', value: 'DIVORCIADO_A' },
-    { label: 'União estável', value: 'UNIAO_ESTAVEL' },
-    { label: 'Viúvo(a)', value: 'VIUVO_A' },
+    { label: 'Solteiro(a)', value: 'SOLTEIRO(A)' },
+    { label: 'Casado(a)', value: 'CASADO(A)' },
+    { label: 'Divorciado(a)', value: 'DIVORCIADO(A)' },
+    { label: 'União estável', value: 'UNIAO ESTÁVEL' },
+    { label: 'Viúvo(a)', value: 'VIUVO(A)' },
   ];
 
   escolaridades = [
-    { label: 'Ensino Básico', value: 'BASICO' },
+    { label: 'Ensino Básico', value: 'BÁSICO' },
     { label: 'Ensino Fundamental', value: 'FUNDAMENTAL' },
-    { label: 'Ensino Médio', value: 'MEDIO' },
+    { label: 'Ensino Médio', value: 'MÉDIO' },
     { label: 'Superior', value: 'SUPERIOR' },
-    { label: 'Pós Graduação', value: 'POS' },
+    { label: 'Pós Graduação', value: 'PÓS GRADUAÇÃO' },
     { label: 'Mestrado', value: 'MESTRADO' },
     { label: 'Doutorado', value: 'DOUTORADO' },
-    { label: 'Pós Doutrorado', value: 'POS_DOUTORADO' },
-    { label: 'Analfabeto', value: 'ANALFABETO' },
+    { label: 'Pós Doutrorado', value: 'PÓS DOUTORADO' },
+    { label: 'Analfabeto', value: 'ANALFABETO(A)' },
   ];
 
   funcionario = new Funcionario();

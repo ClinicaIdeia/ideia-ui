@@ -9,8 +9,15 @@
 
       <div class="ui-g-6 ui-md-2 ui-fluid">
         <label>Data Agenda</label>
-        <p-calendar name="diaAgenda" dateFormat="dd/mm/yy" [inline]="false" [readonlyInput]="false" [showIcon]="false"
-          [(ngModel)]="agenda.diaAgenda" #diaAgenda="ngModel" required></p-calendar>
+        <p-calendar name="diaAgenda" 
+                    dateFormat="dd/mm/yy" 
+                    [inline]="false" 
+                    [readonlyInput]="false" 
+                    [showIcon]="false"
+                    [(ngModel)]="agenda.diaAgenda" 
+                    #diaAgenda="ngModel" 
+                    ngModel
+                    required></p-calendar>
 
         <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
       </div>

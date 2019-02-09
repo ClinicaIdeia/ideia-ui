@@ -14,12 +14,12 @@
       <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
       <a style="color:red" [routerLink]="['/troca-senha']">Troca de senha</a>
     </li>
-    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_PESQUISAR_AGENDAMENTO') || auth.temPermissao('ROLE_ADMIN')"><a
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_DEFAULT') || auth.temPermissao('ROLE_PESQUISAR_AGENDAMENTO') || auth.temPermissao('ROLE_ADMIN')"><a
         routerLink="/agendamentos">
         Agendamentos</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_PESQUISAR_EMPRESA') || auth.temPermissao('ROLE_ADMIN')"><a
         routerLink="/empresas">Empresas</a></li>
-    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_PESQUISAR_FUNCIONARIO') || auth.temPermissao('ROLE_ADMIN')"><a
+    <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_DEFAULT') || auth.temPermissao('ROLE_PESQUISAR_FUNCIONARIO') || auth.temPermissao('ROLE_ADMIN')"><a
         routerLink="/funcionarios">Funcionarios</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_ADMIN')"><a routerLink="/usuarios">Usuários</a></li>
     <li class="navbar-menuitem" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_PESQUISAR_LAUDO') || auth.temPermissao('ROLE_ADMIN')"><a

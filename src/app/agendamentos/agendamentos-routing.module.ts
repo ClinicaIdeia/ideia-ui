@@ -9,19 +9,19 @@ const routes: Routes = [
     path: 'agendamentos',
     component: AgendamentoPesquisaComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_PESQUISAR_AGENDAMENTO', 'ROLE_ADMIN'] }
+    data: { roles: ['ROLE_PESQUISAR_AGENDAMENTO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
   {
     path: 'agendamentos/novo',
     component: AgendamentoCadastroComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_CADASTRAR_AGENDAMENTO', 'ROLE_ADMIN'] }
+    data: { roles: ['ROLE_CADASTRAR_AGENDAMENTO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
   {
     path: 'agendamentos/:codigo',
     component: AgendamentoCadastroComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_CADASTRAR_AGENDAMENTO', 'ROLE_ADMIN'] }
+    data: { roles: ['ROLE_CADASTRAR_AGENDAMENTO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
 ];
 

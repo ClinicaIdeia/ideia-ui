@@ -3,8 +3,9 @@
 
     <div class="ui-g">
       <div class="ui-g-12">
-          <h1 style="margin-top: 5px;">
-              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição de' : 'Nova'}} Empresa</h1>
+        <h1 style="margin-top: 5px;">
+          <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição
+          de' : 'Nova'}} Empresa</h1>
       </div>
 
       <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -91,6 +92,13 @@
     <div class="ui-g-12 ui-md-3 ui-fluid">
       <label>Telefone</label>
       <p-inputMask mask="(99) 9 9999-9999" type="text" name="telefone" [(ngModel)]="contato.telefone" ngModel #telefone="ngModel"></p-inputMask>
+      <!-- <app-message [control]="telefone" error="required" text="Informe o telefone"></app-message> -->
+    </div>
+
+    <div class="ui-g-12 ui-md-3 ui-fluid">
+      <label>Tel. Fixo</label>
+      <p-inputMask mask="(99) 9999-9999" type="text" name="telefone" [(ngModel)]="contato.telefoneFixo" ngModel
+        #telefone="ngModel"></p-inputMask>
       <!-- <app-message [control]="telefone" error="required" text="Informe o telefone"></app-message> -->
     </div>
 

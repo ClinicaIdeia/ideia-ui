@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
+import { Agenda } from 'app/core/model';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
   selector: 'app-agenda-pesquisa',
@@ -14,10 +16,14 @@ import { LazyLoadEvent } from 'primeng/components/common/api';
 export class AgendaPesquisaComponent implements OnInit {
 
   agendas = [];
+  horarios = [];
   observacao: string;
   dataExameDe: Date;
+  rangeDates: Date[];
   dataExameAte: Date;
+  display = false;
   filtro = new AgendaFiltro();
+  agendaSelecionada = new Agenda();
   pt: any;
 
   constructor(
@@ -25,7 +31,8 @@ export class AgendaPesquisaComponent implements OnInit {
     private agendaService: AgendaService,
     private toasty: ToastyService,
     private confirmation: ConfirmationService,
-    private title: Title
+    private title: Title,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -34,20 +41,40 @@ export class AgendaPesquisaComponent implements OnInit {
 
     this.pt = {
       firstDayOfWeek: 0,
-      dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Thursday", "Friday", "Saturday"],
+      dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
       dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
-      dayNamesMin: ["Do","Sg","Te","Qa","Qu","Sx","Sb"],
-      monthNames: [ "Janiero","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
-      monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-      today: 'Today',
-      clear: 'Clear'
-  };
+      dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qu", "Sx", "Sb"],
+      monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
+  }
+
+  copiaAgenda() {
+    this.display = false;
+  }
+
+  showDialog(agenda) {
+    this.agendaSelecionada = agenda;
+    this.display = true;
+  }
+
+  clonaAgenda() {
+
+    this.agendaService.copiaAgenda(this.agendaSelecionada, this.rangeDates)
+      .then(resultado => {
+        this.toasty.success('Agenda copiada com sucesso!');
+        this.display = false;
+        this.rangeDates = [];
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   pesquisar(pagina = 0) {
 
     this.filtro.pagina = pagina;
-    this.agendaService.pesquisar(this.filtro)
+    this.agendaService.filtrar(this.filtro)
       .then(agendas => {
         this.agendas = agendas
       });

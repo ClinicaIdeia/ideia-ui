@@ -5,20 +5,23 @@ import { FuncionarioCadastroComponent } from './funcionario-cadastro/funcionario
 import { AuthGuard } from 'app/seguranca/auth.guard';
 
 const routes: Routes = [
-  { path: 'funcionarios',
+  {
+    path: 'funcionarios',
     component: FuncionarioPesquisaComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_PESQUISAR_FUNCIONARIO', 'ROLE_ADMIN']}
+    data: { roles: ['ROLE_PESQUISAR_FUNCIONARIO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
-  { path: 'funcionarios/novo',
+  {
+    path: 'funcionarios/novo',
     component: FuncionarioCadastroComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_CADASTRAR_FUNCIONARIO', 'ROLE_ADMIN']}
+    data: { roles: ['ROLE_CADASTRAR_FUNCIONARIO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
-  { path: 'funcionarios/:codigo',
+  {
+    path: 'funcionarios/:codigo',
     component: FuncionarioCadastroComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_CADASTRAR_FUNCIONARIO', 'ROLE_ADMIN']}
+    data: { roles: ['ROLE_CADASTRAR_FUNCIONARIO', 'ROLE_DEFAULT', 'ROLE_ADMIN'] }
   },
 ];
 

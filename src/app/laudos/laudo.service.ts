@@ -4,13 +4,16 @@ import 'rxjs/add/operator/toPromise';
 import { AuthHttp } from 'angular2-jwt';
 import { Laudo } from 'app/core/model';
 import { environment } from 'environments/environment';
-
+import * as moment from 'moment';
+import { Http, Headers, URLSearchParams } from '@angular/http';
 export class LaudoFiltro {
   dataLaudoDe: Date;
   dataLaudoAte: Date;
-  empresa: number;
-  funcionario: number;
+  codEmpresa: number;
+  codFuncionario: number;
   observacao: string;
+  pagina = 0;
+  itensPorPagina = 5;
 }
 
 @Injectable()
@@ -42,21 +45,17 @@ export class LaudoService {
   pesquisar(filtro: LaudoFiltro): Promise<any> {
     const params = new URLSearchParams();
 
-    // if (filtro.nome) {
-    //   params.set('nome', filtro.nome);
-    // }
-    // if (filtro.telefone) {
-    //   params.set('telefone', filtro.telefone);
-    // }
-    // if (filtro.cnpj) {
-    //   params.set('cnpj', filtro.cnpj);
-    // }
-    // if (filtro.email) {
-    //   params.set('email', filtro.email);
-    // }
-
+    if (filtro.observacao) {
+      params.set('observacao', filtro.observacao);
+    }
+    if (filtro.dataLaudoDe) {
+      params.set('dataLaudoDe', moment(filtro.dataLaudoDe).format('YYYY-MM-DD'));
+    }
+    if (filtro.dataLaudoAte) {
+      params.set('dataLaudoAte', moment(filtro.dataLaudoAte).format('YYYY-MM-DD'));
+    }
     return this.http.get(`${this.laudosUrl}`,
-      { search: filtro })
+      { search: params })
       .toPromise()
       .then(response => {
         const laudos = response.json().content;

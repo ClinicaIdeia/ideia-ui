@@ -25,6 +25,7 @@ export class AgendaCadastroComponent implements OnInit {
 
   funcionarios = [];
   motivos = [];
+  rangeDates: Date[];
   agendas = [];
   horarios = [];
   agenda = new Agenda();

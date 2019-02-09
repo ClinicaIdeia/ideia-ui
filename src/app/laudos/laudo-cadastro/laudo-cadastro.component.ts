@@ -35,6 +35,7 @@ export class LaudoCadastroComponent implements OnInit {
   newAptidao = new Aptidao();
   aptidoes = [];
   display: boolean = false;
+  isAtestado: boolean = false;
 
   constructor(
     private funcionarioService: FuncionarioService,
@@ -62,7 +63,14 @@ export class LaudoCadastroComponent implements OnInit {
     this.aptidao = new Aptidao();
 
     this.aptidao.apto = false;
-    this.aptidao.descricao = 'APTO ao manuseio de arma de fogo e ao exercício da profissão de vigilante';
+    this.aptidao.descricao = 'APTO ao manuseio de arma de fogo e ao exercício da profissão de Vigilante';
+
+    this.aptidoes.push(this.aptidao);
+
+    this.aptidao = new Aptidao();
+
+    this.aptidao.apto = false;
+    this.aptidao.descricao = 'INAPTO';
 
     this.aptidoes.push(this.aptidao);
     this.laudo.aptidoes = this.aptidoes;
@@ -102,6 +110,9 @@ export class LaudoCadastroComponent implements OnInit {
     this.agendamentoService.buscarPorCodigo(codigo)
       .then(agendamento => {
         this.agendamento = agendamento;
+        if (!this.agendamento.trabalhoArmado) {
+          this.isAtestado = true;
+        }
         this.deparaAgendamentoLaudo(this.agendamento);
         this.atualizarTituloEdicao();
       })
@@ -142,7 +153,7 @@ export class LaudoCadastroComponent implements OnInit {
   }
 
   adicionarLaudo(form: FormControl) {
-    this.laudo.codAgendamento = this.agendamento.codigo;
+    this.laudo.agendamento = this.agendamento;
     this.laudoService.adicionar(this.laudo)
       .then(laudoAdicionado => {
         this.gerarLaudo(laudoAdicionado.codigo);

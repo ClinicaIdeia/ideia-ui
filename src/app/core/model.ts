@@ -12,6 +12,7 @@ export class Contato {
   codigo: number;
   nome: string;
   telefone: string;
+  telefoneFixo: string;
   email: string;
 }
 
@@ -47,6 +48,7 @@ export class Funcionario {
   email: string;
   matricula: string;
   telefone: string;
+  telefoneFixo: string;
   cargo: string;
   endereco = new Endereco();
   empresas = Array<Empresa>();
@@ -74,6 +76,7 @@ export class Agenda {
   codigo: number;
   diaAgenda: Date;
   horarios: Array<Horario>;
+  diasCopia: Array<Date>;
   observacao: string;
 }
 
@@ -123,7 +126,7 @@ export class Aptidao {
 
 export class Laudo {
   codigo: number;
-  codAgendamento: number;
+  agendamento = new Agendamento();
   funcionario = new Funcionario();
   aptidoes: Array<Aptidao>;
   observacao: string;

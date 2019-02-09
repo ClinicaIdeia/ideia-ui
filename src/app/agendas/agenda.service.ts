@@ -70,6 +70,37 @@ export class AgendaService {
       .then(response => response.json().content);
   }
 
+  filtrar(filtro: AgendaFiltro): Promise<any> {
+    const params = new URLSearchParams();
+
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
+    if (filtro.diaAgendaDe) {
+      params.set('diaAgendaDe', moment(filtro.diaAgendaDe).format('YYYY-MM-DD'));
+    }
+    if (filtro.diaAgendaAte) {
+      params.set('diaAgendaAte', moment(filtro.diaAgendaAte).format('YYYY-MM-DD'));
+    }
+    if (filtro.observacao) {
+      params.set('observacao', filtro.observacao);
+    }
+
+    return this.http.get(`${this.agendasUrl}/filtro`,
+      { search: params })
+      .toPromise()
+      .then(response => response.json().content);
+  }
+
+  copiaAgenda(agenda: Agenda, rangeDates: Date[]): Promise<Agenda> {
+    agenda.diasCopia = rangeDates;
+    return this.http.post(`${this.agendasUrl}/copia`,
+      JSON.stringify(agenda))
+      .toPromise()
+      .then(response => response.json());
+
+  }
+
   adicionar(agenda: Agenda): Promise<Agenda> {
 
     return this.http.post(this.agendasUrl,

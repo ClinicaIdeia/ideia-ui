@@ -12,6 +12,7 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton';
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
+import { DialogModule } from 'primeng/components/dialog/dialog';
 import { SharedModule } from 'primeng/components/common/shared';
 import { AgendasRoutingModule } from './agendas-routing.module';
 
@@ -28,6 +29,7 @@ import { AgendasRoutingModule } from './agendas-routing.module';
     SelectButtonModule,
     DropdownModule,
     InputMaskModule,
+    DialogModule,
 
     SharedModule,
     AgendasRoutingModule

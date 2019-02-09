@@ -5,7 +5,7 @@
       <div class="ui-g-12">
         <h1 style="margin-top: 5px;">
           <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição
-          de' : 'Novo' }} Laudo</h1>
+          de' : 'Novo' }} {{ isAtestado? 'Atestado' : 'Laudo' }}</h1>
       </div>
 
       <p-panel class="Panel">
@@ -111,7 +111,7 @@
         <textarea pInputTextarea rows="3" name="observacao" [(ngModel)]="laudo.observacao"></textarea>
       </div>
 
-      <p-panel class="Panel">
+      <p-panel *ngIf="agendamento.trabalhoArmado" class="Panel">
         <p-header>
           <div class="ui-helper-clearfix">
             <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Aptidões do
@@ -149,8 +149,8 @@
 
         <p-footer>
           <button pButton type="button" icon="fa-plus" label="Inserir Nova Aptidão" (click)="showDialog()" class="ui-button-info" 
-                  *ngIf="laudo.aptidoes && laudo.aptidoes.length < 3"></button>
-          <button pButton type="button" icon="fa-list" label="View" class="ui-button-success"></button>
+                  *ngIf="laudo.aptidoes && laudo.aptidoes.length < 4"></button>
+         
         </p-footer>
       </p-panel>
 

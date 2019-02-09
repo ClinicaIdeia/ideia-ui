@@ -5,10 +5,10 @@
 
       <div class="ui-g-12">
           <h1 style="margin-top: 5px;">
-              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Agendamentos</h1>
+              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Laudos</h1>
       </div>
 
-      <div class="ui-g-12 ui-fluid">
+      <!-- <div class="ui-g-12 ui-fluid">
         <label>Empresa</label>
         <input pInputText type="text" name="emprsa" [(ngModel)]="filtro.empresa">
       </div>
@@ -16,10 +16,10 @@
       <div class="ui-g-12 ui-fluid">
         <label>Funcionario</label>
         <input pInputText type="text" name="funcionario" [(ngModel)]="filtro.funcionario">
-      </div>
+      </div> -->
 
       <div class="ui-g-12">
-        <label style="display: block">Agendamentos de: </label>
+        <label style="display: block">Laudos emitidos de: </label>
         <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" name="dataLaudoDe" [(ngModel)]="filtro.dataLaudoDe"></p-calendar>
 
         <label>até</label>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="ui-g-12">
-      <a pButton label="Nova Laudo" routerLink="/laudos/novo"></a>
+      <a pButton label="Novo Laudo" routerLink="/laudos/novo"></a>
     </div>    
 
   </div>

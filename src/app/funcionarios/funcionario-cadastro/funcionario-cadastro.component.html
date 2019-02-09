@@ -70,6 +70,17 @@
                         required></p-inputMask>
           <app-message [control]="telefone" error="required" text="Informe o telefone"></app-message>
         </div>
+
+        <div class="ui-g-12 ui-md-3 ui-fluid">
+          <label>Tel. Fixo</label>
+          <p-inputMask  mask="(99) 9 9999-9999"
+                        type="text"
+                        name="telefoneFixo"
+                        [(ngModel)]="funcionario.telefoneFixo"
+                        ngModel
+                        #telefoneFixo="ngModel"></p-inputMask>
+          <!-- <app-message [control]="telefoneFixo" error="required" text="Informe o telefoneFixo"></app-message> -->
+        </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
           <label>E-mail</label>
@@ -78,12 +89,22 @@
                   type="email"
                   name="email"
                   [(ngModel)]="funcionario.email" #contatoEmail="ngModel" />
-          <!-- <app-message [control]="contatoEmail" error="email" text="Informe um e-mail válido"></app-message> -->
         </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
-          <label>Cargo</label>
-          <input pInputText type="cargo" name="cargo" [(ngModel)]="funcionario.cargo" />
+          <label>Cargo<span style="color: red;">*</span></label>
+          <input  pInputText 
+                  type="text" 
+                  name="cargo" 
+                  [(ngModel)]="funcionario.cargo"   
+                  ngModel
+                  #cargo="ngModel"
+                  required minlength="3" />
+
+          <app-message [control]="cargo" error="required" text="Informe o cargo do funcionário"></app-message>
+          <app-message [control]="cargo" error="minlength"
+            text="Mínimo de {{ cargo?.errors?.minlength?.requiredLength }} caracteres. Você digitou apenas: {{ cargo?.errors?.minlength?.actualLength }}">
+          </app-message>
         </div>
   
         <div  class="ui-g-12 ui-md-3 ui-fluid"
