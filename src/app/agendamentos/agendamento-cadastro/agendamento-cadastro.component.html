@@ -19,7 +19,15 @@
         </p-dropdown>
       </div>
 
-      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="!agendamento.avulso">
+      <div class="ui-g-12 ui-md-6 ui-fluid" style="margin-top: 20px;">
+        <label>Trabalho armado ?</label>
+          <p-checkbox [(ngModel)]="agendamento.trabalhoArmado" 
+                      name="trabalhoArmado" 
+                      (onChange)="carregarHorarios()"
+                      binary="true"></p-checkbox>
+      </div>      
+
+      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="!agendamento.avulso">
         <label>Datas disponíveis</label>
         <p-dropdown name="agendas" [options]="agendas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
           [(ngModel)]="agendamento.agenda.codigo"
@@ -27,7 +35,7 @@
           ></p-dropdown>
       </div>
 
-      <div class="ui-g-6 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+      <div class="ui-g-6 ui-md-4 ui-fluid" *ngIf="agendamento.avulso">
         <label>Data Agenda</label>
         <p-calendar name="diaAgenda" dateFormat="dd/mm/yy" [inline]="false" [readonlyInput]="false" [showIcon]="false"
           [(ngModel)]="agenda.diaAgenda" #diaAgenda="ngModel" required></p-calendar>
@@ -35,7 +43,7 @@
         <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
       </div>
 
-      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="!agendamento.avulso">
+      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="!agendamento.avulso">
         <label>Horário</label>
         <p-dropdown name="horarios" [options]="horarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
           [(ngModel)]="agendamento.codHorario"
@@ -43,22 +51,18 @@
           ></p-dropdown>
       </div>
 
-      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="agendamento.avulso">
         <label>Horário</label>
           <p-inputMask mask="99:99" type="text" name="horaExame" [(ngModel)]="horario.horaExame">
         </p-inputMask>
       </div>
 
-      <div class="ui-g-12 ui-md-6 ui-fluid">
+      <div class="ui-g-12 ui-md-4 ui-fluid">
         <label>Funcionário</label>
         <p-dropdown name="funcionario" [options]="funcionarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
           [(ngModel)]="agendamento.funcionario.codigo"></p-dropdown>
       </div>
 
-      <div class="ui-g-12">
-        <label>Trabalho armado ?</label>
-          <p-checkbox [(ngModel)]="agendamento.trabalhoArmado" name="trabalhoArmado" binary="true"></p-checkbox>
-      </div>
       
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>

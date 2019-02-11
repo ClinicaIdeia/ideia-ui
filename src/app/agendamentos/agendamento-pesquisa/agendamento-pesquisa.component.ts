@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
   selector: 'app-agendamento-pesquisa',
@@ -13,6 +14,7 @@ import { LazyLoadEvent } from 'primeng/components/common/api';
 })
 export class AgendamentoPesquisaComponent implements OnInit {
 
+  totalRegistros = 0;
   agendamentos = [];
   observacao: string;
   dataExameDe: Date;
@@ -22,6 +24,7 @@ export class AgendamentoPesquisaComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private agendamentoService: AgendamentoService,
+    private errorHandler: ErrorHandlerService,
     private toasty: ToastyService,
     private confirmation: ConfirmationService,
     private title: Title
@@ -37,9 +40,11 @@ export class AgendamentoPesquisaComponent implements OnInit {
     this.filtro.pagina = pagina;
     
     this.agendamentoService.pesquisar(this.filtro)
-      .then(agendamentos => {
-        this.agendamentos = agendamentos
-      });
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.agendamentos = resultado.agendamentos;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {

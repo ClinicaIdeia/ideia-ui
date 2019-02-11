@@ -170,8 +170,8 @@ export class AgendamentoCadastroComponent implements OnInit {
   }
 
   carregarHorarios() {
-    const codMotivo = this.agendamento.motivo.codigo;
-    return this.agendamentoService.pesquisarAgendas(codMotivo)
+    const isTrabalhoArmado = this.agendamento.trabalhoArmado ? this.agendamento.trabalhoArmado : false;
+    return this.agendaService.pesquisarAgendasParaTrabalhoArmado(isTrabalhoArmado)
       .then(agendas => {
         this.agendasCopy = agendas.content;
         const agendasDropDown = agendas.content;

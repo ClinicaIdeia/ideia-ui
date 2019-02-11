@@ -64,10 +64,22 @@ export class AgendaService {
       params.set('observacao', filtro.observacao);
     }
 
-    return this.http.get(`${this.agendasUrl}`,
+    return this.http.get(`${this.agendasUrl}?isTrabalhoArmado=false`,
       { search: params })
       .toPromise()
       .then(response => response.json().content);
+  }
+
+
+  pesquisarAgendasParaTrabalhoArmado(isTrabalhoArmado: boolean): Promise<any> {
+  
+    return this.http.get(`${this.agendasUrl}?isTrabalhoArmado=${isTrabalhoArmado}`,)
+      .toPromise()
+      .then(response => {
+        const agendas = response.json();
+        this.converterDatasAgendas(agendas);
+        return agendas;
+      });
   }
 
   filtrar(filtro: AgendaFiltro): Promise<any> {
@@ -148,6 +160,12 @@ export class AgendaService {
     for (const agenda of agendas) {
       agenda.diaAgenda = moment(agenda.diaAgenda, 'YYYY-MM-DD').toDate();
     }
+  }
+
+  private converterDatasAgendas(agendas: Agenda[]) {
+    agendas['content'].forEach(agenda => {
+      agenda.diaAgenda = moment(agenda.diaAgenda, 'YYYY-MM-DD').format('DD/MM/YYYY');
+    });
   }
 
 }

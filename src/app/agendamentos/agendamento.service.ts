@@ -12,7 +12,7 @@ export class AgendamentoFiltro {
   observacao: string;
   dataExameDe: Date;
   dataExameAte: Date;
-  laudoGerado = "false";
+  laudoGerado: boolean;
   pagina = 0;
   itensPorPagina = 5;
 }
@@ -33,6 +33,9 @@ export class AgendamentoService {
   pesquisar(filtro: AgendamentoFiltro): Promise<any> {
     const params = new URLSearchParams();
 
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
     if (filtro.observacao) {
       params.set('observacao', filtro.observacao);
     }
@@ -43,19 +46,29 @@ export class AgendamentoService {
       params.set('dataExameAte', moment(filtro.dataExameAte).format('YYYY-MM-DD'));
     }
     if (filtro.laudoGerado) {
-      params.set('laudoGerado', filtro.laudoGerado);
+      params.set('laudoGerado', filtro.laudoGerado.toString());
     }
 
     return this.http.get(`${this.agendamentosUrl}`,
       { search: params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const responseJson = response.json();
+        const agendamentos = responseJson.content;
+
+        const resultado = {
+          agendamentos,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
   pesquisarAgendamentosParaLaudo(): Promise<any> {
     return this.http.get(`${this.agendamentosUrl}/laudos/gerar`)
-    .toPromise()
-    .then(response => response.json().content);
+      .toPromise()
+      .then(response => response.json().content);
   }
 
   adicionar(agendamento: Agendamento): Promise<Agendamento> {
@@ -92,31 +105,6 @@ export class AgendamentoService {
         const motivos = response.json();
         return motivos;
       });
-  }
-
-  pesquisarAgendas(codMotivo: number): Promise<any> {
-    const params = new URLSearchParams();
-
-    const filtro = new AgendaFiltro();
-    if (codMotivo) {
-      filtro.codMotivo = codMotivo;
-      params.set('codMotivo', codMotivo.toString());
-    }
-
-    return this.http.get(`${this.agendasUrl}`,
-      { search: filtro })
-      .toPromise()
-      .then(response => {
-        const agendas = response.json();
-        this.converterDatasAgendas(agendas);
-        return agendas;
-      });
-  }
-
-  private converterDatasAgendas(agendas: Agenda[]) {
-    agendas['content'].forEach(agenda => {
-      agenda.diaAgenda = moment(agenda.diaAgenda, 'YYYY-MM-DD').format('DD/MM/YYYY');
-    });
   }
 
   // Chamar no busca por codigo e na atualização

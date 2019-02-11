@@ -23,7 +23,7 @@
 
       <div class="ui-g-12">
         <label>Pesquisar por laudos Gerados ?</label>
-          <p-checkbox [(ngModel)]="filtro.laudoGerado" name="laudoGerado" binary="false"></p-checkbox>
+          <p-checkbox [(ngModel)]="filtro.laudoGerado" name="laudoGerado" binary="true"></p-checkbox>
       </div>
 
       <div class="ui-g-12">
@@ -36,9 +36,15 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable [value]="agendamentos" [responsive]="true" emptyMessage="Nenhum Agendamento encontrado" [paginator]="true"
-        [rows]="filtro.itensPorPagina" [lazy]="true" (onLazyLoad)="aoMudarPagina($event)"
-        #tabela>
+      <p-dataTable  [value]="agendamentos" 
+                    emptyMessage="Nenhum Agendamento encontrado" 
+                    [responsive]="true" 
+                    [paginator]="true" 
+                    [rows]="filtro.itensPorPagina" 
+                    [lazy]="true"
+                    [totalRecords]="totalRegistros" 
+                    (onLazyLoad)="aoMudarPagina($event)" 
+                    #tabela >
 
         <p-column header="Data exame" styleClass="col-data">
           <ng-template let-age="rowData" pTemplate="body">
