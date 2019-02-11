@@ -2,8 +2,10 @@ import { AuthService } from './../../seguranca/auth.service';
 import { ToastyService } from 'ng2-toasty';
 import { EmpresaService, EmpresaFiltro } from '../empresa.service';
 import { Component, OnInit } from '@angular/core';
+import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
   selector: 'app-empresa-pesquisa',
@@ -12,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class EmpresaPesquisaComponent implements OnInit {
 
+  totalRegistros = 0;
   empresas = [];
   contatos = [];
   display = false;
@@ -22,7 +25,8 @@ export class EmpresaPesquisaComponent implements OnInit {
     private empresaService: EmpresaService,
     private toasty: ToastyService,
     private confirmation: ConfirmationService,
-    private title: Title
+    private title: Title,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -30,11 +34,20 @@ export class EmpresaPesquisaComponent implements OnInit {
     this.pesquisar();
   }
 
-  pesquisar() {
+  pesquisar(pagina = 0) {
+
+    this.filtro.pagina = pagina;
     this.empresaService.pesquisar(this.filtro)
-      .then(empresas => {
-        this.empresas = empresas
-      });
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.empresas = resultado.empresas;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
   }
 
   showDialog(empresa) {

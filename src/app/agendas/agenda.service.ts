@@ -64,10 +64,19 @@ export class AgendaService {
       params.set('observacao', filtro.observacao);
     }
 
-    return this.http.get(`${this.agendasUrl}?isTrabalhoArmado=false`,
-      { search: params })
+    return this.http.get(`${this.agendasUrl}?isTrabalhoArmado=false`, { search: params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const responseJson = response.json();
+        const agendas = responseJson.content;
+
+        const resultado = {
+          agendas,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
 
@@ -101,7 +110,17 @@ export class AgendaService {
     return this.http.get(`${this.agendasUrl}/filtro`,
       { search: params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const responseJson = response.json();
+        const agendas = responseJson.content;
+
+        const resultado = {
+          agendas,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
   copiaAgenda(agenda: Agenda, rangeDates: Date[]): Promise<Agenda> {

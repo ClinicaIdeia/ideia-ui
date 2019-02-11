@@ -36,16 +36,16 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable  [value]="agendas" 
-                    [responsive]="true" 
-                    expandableRows="true" 
+      <p-dataTable  [value]="agendas"  
                     emptyMessage="Nenhuma Agenda encontrada" 
                     [paginator]="true"
+                    [responsive]="true" 
+                    [paginator]="true" 
                     [rows]="filtro.itensPorPagina" 
-                    [lazy]="true" 
-                    exportFilename="agendas"
-                    (onLazyLoad)="aoMudarPagina($event)"
-                    #tabela>
+                    [lazy]="true"
+                    [totalRecords]="totalRegistros" 
+                    (onLazyLoad)="aoMudarPagina($event)" 
+                    #tabela >
 
         <!-- <p-header>
             <div class="ui-helper-clearfix">

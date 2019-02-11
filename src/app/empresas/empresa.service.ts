@@ -5,12 +5,15 @@ import 'rxjs/add/operator/toPromise';
 import { AuthHttp } from 'angular2-jwt';
 import { Empresa } from 'app/core/model';
 import { environment } from 'environments/environment';
+import { URLSearchParams } from '@angular/http';
 
 export class EmpresaFiltro {
   nome: string;
   telefone: string;
   cnpj: string;
   email: string;
+  pagina = 0;
+  itensPorPagina = 5;
 }
 
 @Injectable()
@@ -44,6 +47,9 @@ export class EmpresaService {
   pesquisar(filtro: EmpresaFiltro): Promise<any> {
     const params = new URLSearchParams();
 
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
     if (filtro.nome) {
       params.set('nome', filtro.nome);
     }
@@ -57,13 +63,19 @@ export class EmpresaService {
       params.set('email', filtro.email);
     }
 
-    return this.http.get(`${this.empresasUrl}`,
-      { search: filtro })
+    return this.http.get(`${this.empresasUrl}`, { search: params })
       .toPromise()
       .then(response => {
-        const empresas = response.json().content;
-        return empresas;
-      });
+        const responseJson = response.json();
+        const empresas = responseJson.content;
+
+        const resultado = {
+          empresas,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
   pesquisarTodas(): Promise<any> {

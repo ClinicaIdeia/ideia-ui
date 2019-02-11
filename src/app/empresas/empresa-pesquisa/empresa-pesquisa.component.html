@@ -39,7 +39,17 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable [value]="empresas" [paginator]="true" [rows]="5" [responsive]="true">
+      <p-dataTable  [value]="empresas" 
+                    emptyMessage="Nenhuma empresa encontrada" 
+                    [paginator]="true"
+                    [responsive]="true" 
+                    [paginator]="true" 
+                    [rows]="filtro.itensPorPagina" 
+                    [lazy]="true"
+                    [totalRecords]="totalRegistros" 
+                    (onLazyLoad)="aoMudarPagina($event)" 
+                    #tabela >
+
         <p-column field="nome" header="Nome"></p-column>
         <p-column field="cnpj" header="CNPJ"></p-column>
         <p-column field="ativa" header="Ativa ?"></p-column>

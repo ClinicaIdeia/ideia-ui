@@ -15,6 +15,7 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 })
 export class AgendaPesquisaComponent implements OnInit {
 
+  totalRegistros = 0;
   agendas = [];
   horarios = [];
   observacao: string;
@@ -75,9 +76,11 @@ export class AgendaPesquisaComponent implements OnInit {
 
     this.filtro.pagina = pagina;
     this.agendaService.filtrar(this.filtro)
-      .then(agendas => {
-        this.agendas = agendas
-      });
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.agendas = resultado.agendas;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
