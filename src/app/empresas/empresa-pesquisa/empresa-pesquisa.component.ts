@@ -2,9 +2,9 @@ import { AuthService } from './../../seguranca/auth.service';
 import { ToastyService } from 'ng2-toasty';
 import { EmpresaService, EmpresaFiltro } from '../empresa.service';
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
+import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({

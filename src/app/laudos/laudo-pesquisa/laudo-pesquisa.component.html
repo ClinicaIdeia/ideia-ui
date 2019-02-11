@@ -42,7 +42,15 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable [value]="laudos" [paginator]="true" [rows]="5" [responsive]="true">
+      <p-dataTable [value]="laudos" 
+                  emptyMessage="Nenhum laudo encontrado" 
+                  [paginator]="true"
+                  [responsive]="true" 
+                  [rows]="filtro.itensPorPagina" 
+                  [lazy]="true"
+                  [totalRecords]="totalRegistros" 
+                  (onLazyLoad)="aoMudarPagina($event)" 
+                  #tabela >
         <p-column field="codigo" header="Codigo"></p-column>
         <p-column field="funcionario.nome" header="Func"></p-column>
         <p-column field="observacao" header="Observação"></p-column>
@@ -60,10 +68,6 @@
       </p-dataTable>
 
     </div>
-
-    <div class="ui-g-12">
-      <a pButton label="Novo Laudo" routerLink="/laudos/novo"></a>
-    </div>    
 
   </div>
 

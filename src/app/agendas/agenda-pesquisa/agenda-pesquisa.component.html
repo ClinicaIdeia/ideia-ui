@@ -37,6 +37,7 @@
     <div class="ui-g-12">
 
       <p-dataTable  [value]="agendas"  
+                    expandableRows="true"
                     emptyMessage="Nenhuma Agenda encontrada" 
                     [paginator]="true"
                     [responsive]="true" 
@@ -75,10 +76,11 @@
 
           </ng-template>
         </p-column>
-        <ng-template let-agen pTemplate="rowexpansion">
-          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+
+        <ng-template let-car pTemplate="rowexpansion">
+          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px; padding:20px">
               <div class="ui-grid-row">
-                   <p-dataTable [value]="agen.horarios" [loading]="false">
+                   <p-dataTable [value]="car.horarios" [loading]="false">
                       <p-column field="horaExame" header="Horário"></p-column>
                       <p-column field="maximoPermitido" header="Max"></p-column>
                   </p-dataTable>
@@ -100,8 +102,8 @@
                     dateFormat="dd/mm/yy" 
                     name="rangeDatesAgenda" 
                     selectionMode="range" 
-                    readonlyInput="true"></p-calendar>
-
+                    readonlyInput="true">
+        </p-calendar>
       </div>
   
       <p-footer>

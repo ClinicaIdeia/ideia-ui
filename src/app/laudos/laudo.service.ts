@@ -45,6 +45,9 @@ export class LaudoService {
   pesquisar(filtro: LaudoFiltro): Promise<any> {
     const params = new URLSearchParams();
 
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
     if (filtro.observacao) {
       params.set('observacao', filtro.observacao);
     }
@@ -58,8 +61,15 @@ export class LaudoService {
       { search: params })
       .toPromise()
       .then(response => {
-        const laudos = response.json().content;
-        return laudos;
+        const responseJson = response.json();
+        const laudos = responseJson.content;
+
+        const resultado = {
+          laudos,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
       });
   }
 

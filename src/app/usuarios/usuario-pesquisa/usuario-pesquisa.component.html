@@ -38,7 +38,16 @@
     <div class="ui-g">
       <div class="ui-g-12">
 
-        <p-dataTable [value]="usuarios" [paginator]="true" [rows]="5" [responsive]="true" #tabela>
+        <p-dataTable  [value]="usuarios"  
+                      emptyMessage="Nenhum usuário encontrado" 
+                      [paginator]="true"
+                      [responsive]="true" 
+                      [rows]="filtro.itensPorPagina" 
+                      [lazy]="true"
+                      [totalRecords]="totalRegistros" 
+                      (onLazyLoad)="aoMudarPagina($event)" 
+                      #tabela >
+                      
           <p-column field="nome" header="Nome"></p-column>
           <p-column field="email" header="Email"></p-column>
 

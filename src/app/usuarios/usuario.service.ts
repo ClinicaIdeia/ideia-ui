@@ -4,10 +4,13 @@ import 'rxjs/add/operator/toPromise';
 import { Usuario, SenhaAlterar } from 'app/core/model';
 import { AuthHttp } from 'angular2-jwt';
 import { environment } from 'environments/environment';
+import { URLSearchParams } from '@angular/http';
 
 export class UsuarioFiltro {
   nome: string;
   email: string;
+  pagina = 0;
+  itensPorPagina = 5;
 }
 
 @Injectable()
@@ -24,6 +27,9 @@ export class UsuarioService {
   pesquisar(filtro: UsuarioFiltro): Promise<any> {
     const params = new URLSearchParams();
 
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
     if (filtro.nome) {
       params.set('nome', filtro.nome);
     }
@@ -31,10 +37,19 @@ export class UsuarioService {
       params.set('email', filtro.email);
     }
 
-    return this.http.get(`${this.usuariosUrl}`,
-      { search: filtro })
+    return this.http.get(`${this.usuariosUrl}`, { search: params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const responseJson = response.json();
+        const usuarios = responseJson.content;
+
+        const resultado = {
+          usuarios,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
   adicionar(usuario: Usuario): Promise<Usuario> {

@@ -6,6 +6,7 @@ import { ConfirmationService } from 'primeng/components/common/confirmationservi
 import { Title } from '@angular/platform-browser';
 import { RelatorioService } from 'app/relatorios/relatorio.service';
 import { Laudo } from 'app/core/model';
+import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
@@ -21,6 +22,7 @@ export class LaudoPesquisaComponent implements OnInit {
   display = false;
   filtro = new LaudoFiltro();
   laudoSelecionado = new Laudo();
+  totalRegistros = 0;
 
   constructor(
     private auth: AuthService,
@@ -37,11 +39,20 @@ export class LaudoPesquisaComponent implements OnInit {
     this.pesquisar();
   }
 
-  pesquisar() {
+  pesquisar(pagina = 0) {
+
+    this.filtro.pagina = pagina;
     this.laudoService.pesquisar(this.filtro)
-      .then(laudos => {
-        this.laudos = laudos
-      });
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.laudos = resultado.laudos;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
   }
 
   cancelNewAptidao() {

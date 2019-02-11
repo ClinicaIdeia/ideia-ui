@@ -4,6 +4,7 @@ import { AuthService } from 'app/seguranca/auth.service';
 import { ToastyService } from 'ng2-toasty';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { Title } from '@angular/platform-browser';
+import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class UsuarioPesquisaComponent implements OnInit {
   permissoes = [];
   sideBarPermissoes = false;
   filtro = new UsuarioFiltro();
+  totalRegistros = 0;
 
   constructor(
     private auth: AuthService,
@@ -44,11 +46,20 @@ export class UsuarioPesquisaComponent implements OnInit {
 
   }
 
-  pesquisar() {
+  pesquisar(pagina = 0) {
+
+    this.filtro.pagina = pagina;
     this.usuarioService.pesquisar(this.filtro)
-      .then(usuarios => {
-        this.usuarios = usuarios
-      });
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.usuarios = resultado.usuarios;
+    })
+    .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
   }
 
   confirmarExclusao(usario: any) {
