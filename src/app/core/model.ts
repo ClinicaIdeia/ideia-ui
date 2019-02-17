@@ -88,6 +88,7 @@ export class Agendamento {
   motivo = new Motivo();
   agenda = new Agenda();
   funcionario = new Funcionario();
+  empresa = new Empresa();
   trabalhoArmado = false;
   avulso = false;
 }

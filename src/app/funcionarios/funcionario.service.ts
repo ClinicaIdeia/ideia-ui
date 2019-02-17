@@ -73,6 +73,15 @@ export class FuncionarioService {
       });
   }
 
+  buscaPorCPF(cpf: string): Promise<Funcionario> {
+    return this.http.get(`${this.funcionariosUrl}/cpf?cpf=${cpf}`)
+      .toPromise()
+      .then(funcionario => {
+        const func = funcionario.json() as Funcionario
+        return func;
+      });
+  }
+
   pesquisarTodos(): Promise<any> {
 
     return this.http.get(`${this.funcionariosUrl}`)
@@ -88,12 +97,6 @@ export class FuncionarioService {
         const emp = ret.json() as Endereco;
         return emp;
       });
-  }
-
-  private converterStringsParaDatas(funcionarios: Funcionario[]) {
-    // for (const func of funcionarios) {
-    //   func.dataNascimento = moment(func.dataNascimento, 'YYYY-MM-DD').toDate();
-    // }
   }
 
 }

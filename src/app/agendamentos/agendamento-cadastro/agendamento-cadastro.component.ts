@@ -8,9 +8,10 @@ import { ToastyService } from 'ng2-toasty';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { FuncionarioService } from './../../funcionarios/funcionario.service';
-import { Agendamento, Horario, Agenda } from './../../core/model';
+import { Agendamento, Horario, Agenda, Empresa } from './../../core/model';
 import { AgendamentoService } from './../agendamento.service';
 import { AuthService } from 'app/seguranca/auth.service';
+import { EmpresaService } from 'app/empresas/empresa.service';
 
 
 @Component({
@@ -35,10 +36,18 @@ export class AgendamentoCadastroComponent implements OnInit {
   agendamento = new Agendamento();
   agenda = new Agenda();
   horario = new Horario();
+  maisDeUmaEmpresa: boolean = false;
+  modoEdicao: boolean = false;
+  mostrarHorarios: boolean = false;
+  empresa = new Empresa();
+  empresas = [];
+  codEmpresa: number;
+  codigoFunc: number;
 
   constructor(
     private funcionarioService: FuncionarioService,
     private agendamentoService: AgendamentoService,
+    private empresaService: EmpresaService,
     private agendaService: AgendaService,
     private toasty: ToastyService,
     private errorHandler: ErrorHandlerService,
@@ -49,14 +58,9 @@ export class AgendamentoCadastroComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const codigoAgendamento = this.route.snapshot.params['codigo'];
 
     this.title.setTitle('Novo agendamento');
-
-    if (codigoAgendamento) {
-      this.carregarAgendamento(codigoAgendamento);
-    }
-
+    
     this.carregarFuncionarios();
     this.carregarMotivos();
     this.carregarHorarios();
@@ -71,6 +75,8 @@ export class AgendamentoCadastroComponent implements OnInit {
     this.agendamento.codHorario = null;
     this.agendamento.funcionario.codigo = null;
     this.agendamento.trabalhoArmado = false;
+    this.maisDeUmaEmpresa = false;
+    this.empresas = [];
     this.carregarHorarios();
   }
 
@@ -78,40 +84,35 @@ export class AgendamentoCadastroComponent implements OnInit {
     const codAgenda = event.value;
 
     if (codAgenda) {
-
+      this.mostrarHorarios = true;
+      this.modoEdicao = false;
       this.agendaService.buscaPorCodigo(this.agendamento.agenda.codigo)
-      .then(agenda => {
-        this.agenda = agenda;
-        this.horarios = this.agenda.horarios
-        .map(c => ({ label: c.horaExame + ' Horas - restam: ' + c.restante + ' vagas', value: c.codigo }));
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+        .then(agenda => {
+          this.agenda = agenda;
+          this.horarios = this.agenda.horarios
+            .map(c => ({ label: c.horaExame + ' Horas - restam: ' + c.restante + ' vagas', value: c.codigo }));
+        })
+        .catch(erro => this.errorHandler.handle(erro));
 
     }
   }
 
-  get editando() {
-    return Boolean(this.agendamento.codigo)
-  }
-
-  carregarAgendamento(codigo: number) {
-    this.agendamentoService.buscarPorCodigo(codigo)
-      .then(agendamento => {
-        this.agendamento = agendamento;
-        this.atualizarTituloEdicao();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
+  loadEmpresa() {
+    this.empresa = this.agendamento.empresa;
+    this.empresas.push(this.empresa);
+    this.empresas = this.empresas.map(c => {
+      return { label: c.nome, value: c.codigo };
+    });
+    this.codEmpresa = this.empresa.codigo;
+    this.maisDeUmaEmpresa = true;
   }
 
   salvar(form: FormControl) {
-    if (this.editando) {
-      this.atualizarAgendamento(form);
-    } else {
-      this.adicionarAgendamento(form);
-    }
+    this.adicionarAgendamento(form);
   }
 
   adicionarAgendamento(form: FormControl) {
+    this.agendamento.empresa = this.empresa;
     if (this.agendamento.avulso) {
       this.horario.avulso = true;
       this.horarios.push(this.horario);
@@ -120,22 +121,26 @@ export class AgendamentoCadastroComponent implements OnInit {
     }
     this.agendamentoService.adicionar(this.agendamento)
       .then(agendamentoAdicionado => {
+        this.maisDeUmaEmpresa = false;
+        this.empresas = [];
         this.toasty.success('Agendamento adicionado com sucesso!');
-        this.router.navigate(['/agendamentos', agendamentoAdicionado.codigo]);
+        this.router.navigate(['/agendamentos']);
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
 
-  atualizarAgendamento(form: FormControl) {
-    this.agendamentoService.atualizar(this.agendamento)
-      .then(agendamento => {
-        this.agendamento = agendamento;
-
-        this.toasty.success('Agendamento alterado com sucesso!');
-        this.atualizarTituloEdicao();
-      })
-      .catch(erro => this.errorHandler.handle(erro));
-  }
+  // atualizarAgendamento(form: FormControl) {
+  //   this.agendamento.empresa = this.empresa;
+  //   this.agendamentoService.atualizar(this.agendamento)
+  //     .then(agendamento => {
+  //       this.agendamento = agendamento;
+  //       this.maisDeUmaEmpresa = false;
+  //       this.empresas = [];
+  //       this.toasty.success('Agendamento alterado com sucesso!');
+  //       this.router.navigate(['/agendamentos']);
+  //     })
+  //     .catch(erro => this.errorHandler.handle(erro));
+  // }
 
   carregarFuncionarios() {
     this.funcionarioService.pesquisarTodos()
@@ -179,6 +184,32 @@ export class AgendamentoCadastroComponent implements OnInit {
           .map(c => ({ label: c.diaAgenda, value: c.codigo }));
       })
       .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  carregarEmpresas() {
+    this.empresaService.pesquisarTodas()
+      .then(empresas => {
+        this.empresas = empresas.map(c => {
+          return { label: c.nome, value: c.codigo };
+        });
+      });
+  }
+
+  selecionaEmpresa() {
+    this.empresa.codigo = this.codEmpresa;
+  }
+
+  selecionaFuncionario() {
+    console.log(this.agendamento.funcionario);
+    this.funcionarioService.buscaPorCodigo(this.agendamento.funcionario.codigo)
+      .then(func => {
+        if (func.empresas.length > 1) {
+          this.maisDeUmaEmpresa = true;
+          this.empresas = func.empresas.map(c => {
+            return { label: c.nome, value: c.codigo };
+          });
+        }
+      });
   }
 
 }

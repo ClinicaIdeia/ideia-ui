@@ -88,6 +88,17 @@ export class FuncionarioCadastroComponent implements OnInit {
     return this.funcionarioService.urlUploadAnexo();
   }
 
+  loadFuncionario() {
+    this.funcionarioService.buscaPorCPF(this.funcionario.cpf)
+      .then((response) => {
+        this.funcionario = response;
+        this.atualizaTituloEdicao();
+        this.router.navigate(['/funcionarios', this.funcionario.codigo]);
+      })
+      .catch((erro) => {
+      });
+  }
+
   antesUploadAnexo(event) {
     event.xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('token'));
   }
@@ -110,6 +121,11 @@ export class FuncionarioCadastroComponent implements OnInit {
         this.funcionario = response;
         if (!this.funcionario.endereco) {
           this.funcionario.endereco = new Endereco();
+        }
+        if (this.funcionario.empresas) {
+          const tmg = this.funcionario.empresas.length;
+          const emp = this.funcionario.empresas[tmg-1];
+          this.codEmpresa = emp.codigo;
         }
         this.atualizaTituloEdicao();
       })

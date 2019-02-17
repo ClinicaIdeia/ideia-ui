@@ -14,8 +14,32 @@
         <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoFim" name="periodoFim"></p-calendar>
       </div>
 
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Empresa</label>
+        <p-dropdown name="empresa" 
+                    [options]="empresas" 
+                    placeholder="Selecione" 
+                    [autoWidth]="false" 
+                    [filter]="true"
+                    [(ngModel)]="codEmpresa" 
+                    ngModel 
+                    #empresa="ngModel">
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Funcionário</label>
+        <p-dropdown name="funcionario" 
+                    [options]="funcionarios" 
+                    placeholder="Selecione" 
+                    [autoWidth]="false" 
+                    [filter]="true"
+                    [(ngModel)]="codFuncionario">
+        </p-dropdown>
+      </div>
+
       <div class="ui-g-12">
-        <button pButton type="submit" label="Gerar" [disabled]="f.invalid"></button>
+        <button pButton type="submit" label="Gerar Relatório" [disabled]="f.invalid"></button>
       </div>
     </form>
   </div>

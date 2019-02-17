@@ -13,7 +13,7 @@ import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
 import { DialogModule } from 'primeng/components/dialog/dialog';
-import { SharedModule } from 'primeng/components/common/shared';
+import { SharedModule } from '../shared/shared.module';
 import { AgendasRoutingModule } from './agendas-routing.module';
 
 @NgModule({

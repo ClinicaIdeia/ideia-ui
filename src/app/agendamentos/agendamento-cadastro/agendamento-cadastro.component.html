@@ -4,19 +4,22 @@
     <div class="ui-g">
       <div class="ui-g-12">
           <h1 style="margin-top: 5px;">
-            <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">{{ editando ? 'Edição de' : 'Novo' }} Agendamento</h1>
+            <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Novo Agendamento</h1>
       </div>
 
       <div class="ui-g-12 ui-md-6 ui-fluid">
-        <label>Motivo</label>
+        <label>Motivo<span style="color: red;">*</span></label>
         <p-dropdown name="motivo"
                     [options]="motivos"
                     placeholder="Selecione"
                     [autoWidth]="false"
                     [filter]="true"
                     (onChange)="filtraMotivos(f)"
-                    [(ngModel)]="agendamento.motivo.codigo">
+                    [(ngModel)]="agendamento.motivo.codigo"
+                    #motivo="ngModel" 
+                    required>
         </p-dropdown>
+        <app-message [control]="motivo" error="required" text="Informe o motivo do agendamento"></app-message>
       </div>
 
       <div class="ui-g-12 ui-md-6 ui-fluid" style="margin-top: 20px;">
@@ -27,42 +30,94 @@
                       binary="true"></p-checkbox>
       </div>      
 
-      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="!agendamento.avulso">
-        <label>Datas disponíveis</label>
-        <p-dropdown name="agendas" [options]="agendas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
-          [(ngModel)]="agendamento.agenda.codigo"
-          (onChange)="onChange($event)"
-          ></p-dropdown>
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="!agendamento.avulso">
+        <label>Data Agendamento<span style="color: red;">*</span></label>
+        <p-dropdown name="diaAgenda" 
+                    [options]="agendas" 
+                    placeholder="Selecione" 
+                    [autoWidth]="false" 
+                    [filter]="true"
+                    [(ngModel)]="agendamento.agenda.codigo"
+                    (onChange)="onChange($event)"
+                    #diaAgenda="ngModel" 
+                    required>
+        </p-dropdown>
+        <app-message [control]="diaAgenda" error="required" text="Informe o dia do agendamento"></app-message>
       </div>
 
-      <div class="ui-g-6 ui-md-4 ui-fluid" *ngIf="agendamento.avulso">
-        <label>Data Agenda</label>
-        <p-calendar name="diaAgenda" dateFormat="dd/mm/yy" [inline]="false" [readonlyInput]="false" [showIcon]="false"
-          [(ngModel)]="agenda.diaAgenda" #diaAgenda="ngModel" required></p-calendar>
-
-        <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
+      <div class="ui-g-6 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+        <label>Data Agendamento<span style="color: red;">*</span></label>
+        <p-calendar name="diaAgenda" 
+                    dateFormat="dd/mm/yy" 
+                    [inline]="false" 
+                    [readonlyInput]="false"
+                    [showIcon]="false"
+                    [(ngModel)]="agenda.diaAgenda" 
+                    #diaAgenda="ngModel" 
+                    required>
+        </p-calendar>
+        <app-message [control]="diaAgenda" error="required" text="Informe o dia do agendamento"></app-message>
       </div>
 
-      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="!agendamento.avulso">
-        <label>Horário</label>
-        <p-dropdown name="horarios" [options]="horarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
-          [(ngModel)]="agendamento.codHorario"
-          (onChange)="selectHorario($event)"
-          ></p-dropdown>
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="!agendamento.avulso">
+        <label>Horário<span style="color: red;">*</span></label>
+        <p-dropdown name="horaExame" 
+                    [options]="horarios" 
+                    placeholder="Selecione" 
+                    [autoWidth]="false" 
+                    [filter]="true"
+                    [(ngModel)]="agendamento.codHorario"
+                    (onChange)="selectHorario($event)"
+                    required
+                    ngModel
+                    #horaExame="ngModel">
+        </p-dropdown>
+        <app-message [control]="horaExame" error="required" text="O campo Horário é obrigatório"></app-message>
       </div>
 
-      <div class="ui-g-12 ui-md-4 ui-fluid" *ngIf="agendamento.avulso">
-        <label>Horário</label>
-          <p-inputMask mask="99:99" type="text" name="horaExame" [(ngModel)]="horario.horaExame">
-        </p-inputMask>
+      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="agendamento.avulso">
+        <label>Horário<span style="color: red;">*</span></label>
+          <p-inputMask  mask="99:99" 
+                        type="text" 
+                        name="horaExame" 
+                        [(ngModel)]="horario.horaExame"
+                        required
+                        ngModel
+                        #horaExame="ngModel">
+          </p-inputMask>
+        <app-message [control]="horaExame" error="required" text="O campo Horário é obrigatório"></app-message>
+      </div>      
+
+      <div class="ui-g-12 ui-md-3 ui-fluid">
+        <label>Funcionário<span style="color: red;">*</span></label>
+        <p-dropdown name="funcionario" 
+                    [options]="funcionarios" 
+                    placeholder="Selecione" 
+                    [autoWidth]="false" 
+                    [filter]="true"
+                    [(ngModel)]="agendamento.funcionario.codigo"
+                    (onChange)="selecionaFuncionario()"
+                    required
+                    ngModel
+                    #funcionario="ngModel">
+        </p-dropdown>
+        <app-message [control]="funcionario" error="required" text="O campo Funcionário é obrigatório"></app-message>
       </div>
 
-      <div class="ui-g-12 ui-md-4 ui-fluid">
-        <label>Funcionário</label>
-        <p-dropdown name="funcionario" [options]="funcionarios" placeholder="Selecione" [autoWidth]="false" [filter]="true"
-          [(ngModel)]="agendamento.funcionario.codigo"></p-dropdown>
+      <div  class="ui-g-12 ui-md-3 ui-fluid" *ngIf="maisDeUmaEmpresa">
+        <label>Empresa<span style="color: red;">*</span></label>
+        <p-dropdown name="empresa"
+                    [options]="empresas"
+                    placeholder="Selecione"
+                    [autoWidth]="false"
+                    [filter]="true"
+                    [(ngModel)]="codEmpresa"
+                    ngModel
+                    #empresa="ngModel"
+                    (onChange)="selecionaEmpresa()"
+                    required></p-dropdown>
+          <app-message [control]="empresa" error="required" text="O campo Empresa é obrigatório"></app-message>
       </div>
-
       
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>

@@ -107,17 +107,10 @@ export class AgendamentoService {
       });
   }
 
-  // Chamar no busca por codigo e na atualização
-  private converterStringsParaDatas(agendamentos: Agendamento[]) {
-    for (const agendamento of agendamentos) {
-      // agendamento.horario.dataExame = moment(agendamento.horario.dataExame,
-      //   'YYYY-MM-DD').toDate();
-
-      // if (agendamento.dataPagamento) {
-      //   agendamento.dataPagamento = moment(agendamento.dataPagamento,
-      //     'YYYY-MM-DD').toDate();
-      // }
-    }
+  excluir(codigo: number): Promise<void> {
+    return this.http.delete(`${this.agendamentosUrl}/${codigo}`)
+      .toPromise()
+      .then(() => null);
   }
 
 }

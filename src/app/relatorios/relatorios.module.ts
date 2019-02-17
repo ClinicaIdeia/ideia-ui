@@ -7,6 +7,7 @@ import { RelatorioRoutingModule } from './relatorio-routing.module';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
+import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 
@@ -18,6 +19,7 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
     ButtonModule,
     CalendarModule,
     RelatorioRoutingModule,
+    DropdownModule,
     SharedModule
   ],
   declarations: [RelatorioPesquisaComponent],

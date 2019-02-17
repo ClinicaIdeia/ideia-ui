@@ -51,7 +51,12 @@
 
         <p-column field="nome" header="Nome"></p-column>
         <p-column field="cnpj" header="CNPJ"></p-column>
-        <p-column field="ativa" header="Ativa ?"></p-column>
+        <p-column header="Status">
+            <ng-template let-emp="rowData" pTemplate="body">
+            <span *ngIf="emp.ativa" style="color: blue; font-weight: bold;">Sim</span>
+            <span *ngIf="!emp.ativa" style="color: rgb(238, 51, 38); font-weight: bold;">Não</span>
+          </ng-template>
+        </p-column>
         <p-column styleClass="Col-Acoes-Empresa">
           <ng-template pTemplate="body" let-emp="rowData">
             <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/empresas', emp.codigo]"></a>

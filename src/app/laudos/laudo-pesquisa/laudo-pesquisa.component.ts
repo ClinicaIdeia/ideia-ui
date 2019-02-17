@@ -23,6 +23,7 @@ export class LaudoPesquisaComponent implements OnInit {
   filtro = new LaudoFiltro();
   laudoSelecionado = new Laudo();
   totalRegistros = 0;
+  pt: any;
 
   constructor(
     private auth: AuthService,
@@ -37,6 +38,16 @@ export class LaudoPesquisaComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle('Pesquisa de Laudos');
     this.pesquisar();
+    this.pt = {
+      firstDayOfWeek: 0,
+      dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+      dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
+      dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qu", "Sx", "Sb"],
+      monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
   }
 
   pesquisar(pagina = 0) {

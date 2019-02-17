@@ -1,7 +1,7 @@
 import { AuthService } from './../../seguranca/auth.service';
 import { ToastyService } from 'ng2-toasty';
 import { AgendamentoService, AgendamentoFiltro } from '../agendamento.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
@@ -14,12 +14,14 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 })
 export class AgendamentoPesquisaComponent implements OnInit {
 
+  @ViewChild('tabela') grid;
   totalRegistros = 0;
   agendamentos = [];
   observacao: string;
   dataExameDe: Date;
   dataExameAte: Date;
   filtro = new AgendamentoFiltro();
+  pt: any;
 
   constructor(
     private auth: AuthService,
@@ -33,6 +35,16 @@ export class AgendamentoPesquisaComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle('Pesquisa de Agendamentos');
     this.pesquisar();
+    this.pt = {
+      firstDayOfWeek: 0,
+      dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+      dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
+      dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qu", "Sx", "Sb"],
+      monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
   }
 
   pesquisar(pagina = 0) {
@@ -52,13 +64,28 @@ export class AgendamentoPesquisaComponent implements OnInit {
     this.pesquisar(pagina);
   }
 
-  excluir() {
+
+  confirmarExclusao(usario: any) {
     this.confirmation.confirm({
-      message: 'Deseja excluir este registro ?',
+      message: 'Tem certeza que deseja excluir?',
       accept: () => {
-        this.toasty.info('Resgistro excluido com sucesso!');
+        this.excluir(usario);
       }
     });
+  }
+
+  excluir(usario: any) {
+    this.agendamentoService.excluir(usario.codigo)
+      .then(() => {
+        if (this.grid.first === 0) {
+          this.pesquisar();
+        } else {
+          this.grid.first = 0;
+        }
+
+        this.toasty.success('Agendamento excluído com sucesso!');
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
 }

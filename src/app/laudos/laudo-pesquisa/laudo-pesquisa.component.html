@@ -20,10 +20,10 @@
 
       <div class="ui-g-12">
         <label style="display: block">Laudos emitidos de: </label>
-        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" name="dataLaudoDe" [(ngModel)]="filtro.dataLaudoDe"></p-calendar>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataLaudoDe" [(ngModel)]="filtro.dataLaudoDe"></p-calendar>
 
         <label>até</label>
-        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" name="dataLaudoAte" [(ngModel)]="filtro.dataLaudoAte"></p-calendar>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataLaudoAte" [(ngModel)]="filtro.dataLaudoAte"></p-calendar>
       </div>
 
       <div class="ui-g-12 ui-fluid">

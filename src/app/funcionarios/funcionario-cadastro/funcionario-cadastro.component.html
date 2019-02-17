@@ -25,21 +25,22 @@
         </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
-          <label>RG</label>
-          <input pInputText type="text" name="rg" [(ngModel)]="funcionario.rg" />
-        </div>
-  
-        <div class="ui-g-12 ui-md-3 ui-fluid">
           <label>CPF<span style="color: red;">*</span></label>
           <p-inputMask  mask="999.999.999-99"
                         type="text"
                         name="cpf"
                         [(ngModel)]="funcionario.cpf"
+                        (onBlur)="loadFuncionario()"
                         ngModel
                         #cpf="ngModel"
                         required></p-inputMask>
           <app-message [control]="cpf" error="required" text="Informe o CPF do funcionário"></app-message>
         </div>
+
+        <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>RG</label>
+            <input pInputText type="text" name="rg" [(ngModel)]="funcionario.rg" />
+          </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
           <label>Data Nascimento<span style="color: red;">*</span></label>
@@ -60,7 +61,7 @@
         </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
-          <label>Telefone<span style="color: red;">*</span></label>
+          <label>Celular<span style="color: red;">*</span></label>
           <p-inputMask  mask="(99) 9 9999-9999"
                         type="text"
                         name="telefone"
@@ -73,7 +74,7 @@
 
         <div class="ui-g-12 ui-md-3 ui-fluid">
           <label>Tel. Fixo</label>
-          <p-inputMask  mask="(99) 9 9999-9999"
+          <p-inputMask  mask="(99) 9999-9999"
                         type="text"
                         name="telefoneFixo"
                         [(ngModel)]="funcionario.telefoneFixo"

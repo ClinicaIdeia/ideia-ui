@@ -30,6 +30,7 @@ export class AgendaCadastroComponent implements OnInit {
   horarios = [];
   agenda = new Agenda();
   horario = new Horario();
+  pt: any;
 
   constructor(
     private funcionarioService: FuncionarioService,
@@ -51,8 +52,19 @@ export class AgendaCadastroComponent implements OnInit {
     }
 
     this.carregarFuncionarios();
-    this.carregarAgendas();
     this.carregarMotivos();
+
+    this.pt = {
+      firstDayOfWeek: 0,
+      dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+      dayNamesShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"],
+      dayNamesMin: ["Do", "Sg", "Te", "Qa", "Qu", "Sx", "Sb"],
+      monthNames: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthNamesShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
+
   }
 
   get editando() {
@@ -73,14 +85,14 @@ export class AgendaCadastroComponent implements OnInit {
 
   removerHorario(horario) {
 
-   const index = this.horarios.indexOf(horario);
-   this.agenda.horarios = [];
+    const index = this.horarios.indexOf(horario);
+    this.agenda.horarios = [];
 
-   if (index !== -1) {
-    this.horarios.splice(index, 1);
-   }
+    if (index !== -1) {
+      this.horarios.splice(index, 1);
+    }
 
-   setTimeout(function () {
+    setTimeout(function () {
       this.agenda.horarios = this.horarios;
     }.bind(this), 1);
 
@@ -93,7 +105,9 @@ export class AgendaCadastroComponent implements OnInit {
         this.horarios = this.agenda.horarios;
         this.atualizarTituloEdicao();
       })
-      .catch(erro => this.errorHandler.handle(erro));
+      .catch(erro => {
+        this.errorHandler.handle(erro)
+      });
   }
 
   salvar(form: FormControl) {
@@ -108,9 +122,6 @@ export class AgendaCadastroComponent implements OnInit {
     this.agendaService.adicionar(this.agenda)
       .then(agendaAdicionado => {
         this.toasty.success('Agenda adicionado com sucesso!');
-
-        // form.reset();
-        // this.agenda = new Agenda();
         this.router.navigate(['/agendas', agendaAdicionado.codigo]);
       })
       .catch(erro => this.errorHandler.handle(erro));
@@ -143,14 +154,6 @@ export class AgendaCadastroComponent implements OnInit {
           .map(p => ({ label: p.nome, value: p.codigo }));
       })
       .catch(erro => this.errorHandler.handle(erro));
-  }
-
-  carregarAgendas() {
-    this.agendaService.buscarAgendasDisponiveis()
-    .then(response => {
-      this.agendas = response;
-    })
-    .catch(erro => this.errorHandler.handle(erro));
   }
 
   novo(form: FormControl) {

@@ -68,6 +68,7 @@ export class AgendaPesquisaComponent implements OnInit {
         this.toasty.success('Agenda copiada com sucesso!');
         this.display = false;
         this.rangeDates = [];
+        this.pesquisar();
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
