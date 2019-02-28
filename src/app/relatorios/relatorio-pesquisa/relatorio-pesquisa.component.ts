@@ -57,7 +57,7 @@ export class RelatorioPesquisaComponent implements OnInit {
         window.open(url);
         this.codEmpresa = null;
         this.codFuncionario = null;
-      });
+      }).catch(erro => this.errorHandler.handle(erro));
   }
 
 }

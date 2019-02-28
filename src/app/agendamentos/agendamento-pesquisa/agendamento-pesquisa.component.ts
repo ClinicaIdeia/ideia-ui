@@ -1,5 +1,5 @@
 import { AuthService } from './../../seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { AgendamentoService, AgendamentoFiltro } from '../agendamento.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -27,7 +27,7 @@ export class AgendamentoPesquisaComponent implements OnInit {
     private auth: AuthService,
     private agendamentoService: AgendamentoService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title
   ) { }
@@ -83,7 +83,7 @@ export class AgendamentoPesquisaComponent implements OnInit {
           this.grid.first = 0;
         }
 
-        this.toasty.success('Agendamento excluído com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Agendamento excluído com sucesso' });
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

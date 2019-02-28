@@ -18,7 +18,6 @@ import { PanelModule } from 'primeng/components/panel/panel';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { LaudoPesquisaComponent } from './laudo-pesquisa/laudo-pesquisa.component';
 import { LaudoCadastroComponent } from './laudo-cadastro/laudo-cadastro.component';
-import { LaudoEmitirComponent } from './laudo-emitir/laudo-emitir.component';
 
 @NgModule({
   imports: [
@@ -41,7 +40,7 @@ import { LaudoEmitirComponent } from './laudo-emitir/laudo-emitir.component';
 
     LaudoRoutingModule
   ],
-  declarations: [LaudoPesquisaComponent, LaudoCadastroComponent, LaudoEmitirComponent],
+  declarations: [LaudoPesquisaComponent, LaudoCadastroComponent],
   exports: [LaudoPesquisaComponent, LaudoCadastroComponent]
 })
 export class LaudosModule { }

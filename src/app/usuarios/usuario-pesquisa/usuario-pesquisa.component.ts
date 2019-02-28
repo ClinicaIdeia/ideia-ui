@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UsuarioFiltro, UsuarioService } from 'app/usuarios/usuario.service';
-import { AuthService } from 'app/seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { AuthService } from 'app/seguranca/auth.service';
 
 @Component({
   selector: 'app-usuario-pesquisa',
@@ -22,10 +22,10 @@ export class UsuarioPesquisaComponent implements OnInit {
   totalRegistros = 0;
 
   constructor(
-    private auth: AuthService,
     private usuarioService: UsuarioService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
+    public auth: AuthService,
     private errorHandler: ErrorHandlerService,
     private title: Title
   ) { }
@@ -50,11 +50,11 @@ export class UsuarioPesquisaComponent implements OnInit {
 
     this.filtro.pagina = pagina;
     this.usuarioService.pesquisar(this.filtro)
-    .then(resultado => {
-      this.totalRegistros = resultado.total;
-      this.usuarios = resultado.usuarios;
-    })
-    .catch(erro => this.errorHandler.handle(erro));
+      .then(resultado => {
+        this.totalRegistros = resultado.total;
+        this.usuarios = resultado.usuarios;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
@@ -80,7 +80,7 @@ export class UsuarioPesquisaComponent implements OnInit {
           this.grid.first = 0;
         }
 
-        this.toasty.success('Usuário excluída com sucesso!');
+        this.messageService.add({ severity: 'info', detail: 'Usuário excluído com sucesso!' });
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

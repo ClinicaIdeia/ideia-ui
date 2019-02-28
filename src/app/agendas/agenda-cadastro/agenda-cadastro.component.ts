@@ -1,15 +1,15 @@
-import { Response } from '@angular/http';
 import { Title } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { FuncionarioService } from './../../funcionarios/funcionario.service';
 import { Agenda, Horario } from './../../core/model';
 import { AgendaService } from './../agenda.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-agenda-cadastro',
@@ -35,7 +35,7 @@ export class AgendaCadastroComponent implements OnInit {
   constructor(
     private funcionarioService: FuncionarioService,
     private agendaService: AgendaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private router: Router,
@@ -121,7 +121,7 @@ export class AgendaCadastroComponent implements OnInit {
   adicionarAgenda(form: FormControl) {
     this.agendaService.adicionar(this.agenda)
       .then(agendaAdicionado => {
-        this.toasty.success('Agenda adicionado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Agenda cadastrada com sucesso!' });
         this.router.navigate(['/agendas', agendaAdicionado.codigo]);
       })
       .catch(erro => this.errorHandler.handle(erro));
@@ -131,8 +131,7 @@ export class AgendaCadastroComponent implements OnInit {
     this.agendaService.atualizar(this.agenda)
       .then(agenda => {
         this.agenda = agenda;
-
-        this.toasty.success('Agenda alterado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Agenda alterada com sucesso!' });
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));
@@ -168,6 +167,26 @@ export class AgendaCadastroComponent implements OnInit {
 
   atualizarTituloEdicao() {
     this.title.setTitle(`Edição de agenda`);
+  }
+
+  checkDate(envent: Event) {
+    if (!this.validaData(this.agenda.diaAgenda)) {
+      this.messageService.add({ severity: 'error', detail: 'Data com formato inválido!!!' });
+    }
+    this.validaSeDataEMaiorQueHoje(this.agenda.diaAgenda);
+  }
+
+  validaSeDataEMaiorQueHoje(diaAgenda: Date) {
+    var now = moment().format('YYYY-MM-DD');
+    var dia = moment(diaAgenda).format('YYYY-MM-DD');
+    if (now > dia) {
+      this.agenda.diaAgenda = null;
+      this.messageService.add({ severity: 'error', detail: 'Data da agenda menor que hoje!' });
+    }
+  }
+
+  validaData(str) {
+    return !!new Date(str).getTime();
   }
 
 }

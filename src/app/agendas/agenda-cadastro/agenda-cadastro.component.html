@@ -14,13 +14,14 @@
                     [inline]="false" 
                     [readonlyInput]="false" 
                     [showIcon]="false"
+                    (onSelect)="checkDate($event)"
                     [(ngModel)]="agenda.diaAgenda" 
                     #diaAgenda="ngModel" 
                     [locale]="pt"
                     ngModel
                     required></p-calendar>
 
-        <!-- <app-message [control]="diaAgenda" error="required" text="Informe o dia da nova Agenda"></app-message> -->
+        <app-message [control]="diaAgenda" error="required" text="O campo Dia da Agenda é obrigatório."></app-message>
       </div>
 
       <div class="ui-g-12 ui-fluid">

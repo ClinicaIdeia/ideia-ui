@@ -1,5 +1,4 @@
-import { AuthService } from './../../seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { EmpresaService, EmpresaFiltro } from '../empresa.service';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -21,9 +20,8 @@ export class EmpresaPesquisaComponent implements OnInit {
   filtro = new EmpresaFiltro();
 
   constructor(
-    private auth: AuthService,
     private empresaService: EmpresaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title,
     private errorHandler: ErrorHandlerService
@@ -38,11 +36,11 @@ export class EmpresaPesquisaComponent implements OnInit {
 
     this.filtro.pagina = pagina;
     this.empresaService.pesquisar(this.filtro)
-    .then(resultado => {
-      this.totalRegistros = resultado.total;
-      this.empresas = resultado.empresas;
-    })
-    .catch(erro => this.errorHandler.handle(erro));
+      .then(resultado => {
+        this.totalRegistros = resultado.total;
+        this.empresas = resultado.empresas;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
@@ -60,7 +58,7 @@ export class EmpresaPesquisaComponent implements OnInit {
     this.confirmation.confirm({
       message: 'Deseja excluir este registro ?',
       accept: () => {
-        this.toasty.info('Resgistro excluido com sucesso!');
+        this.messageService.add({ severity: 'info', detail: 'Registro excluído com sucesso!' });
       }
     });
   }

@@ -1,5 +1,4 @@
-import { AuthService } from '../../seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { FuncionarioFiltro } from '../funcionario.service';
 import { FuncionarioService } from '../funcionario.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,9 +18,8 @@ export class FuncionarioPesquisaComponent implements OnInit {
   cpf: string;
 
   constructor(
-    private auth: AuthService,
     private funcionarioService: FuncionarioService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title
   ) { }
@@ -45,7 +43,7 @@ export class FuncionarioPesquisaComponent implements OnInit {
     this.confirmation.confirm({
       message: 'Deseja excluir este registro ?',
       accept: () => {
-        this.toasty.info('Resgistro excluido com sucesso!');
+        this.messageService.add({ severity: 'info', detail: 'Registro excluído com sucesso!' });
       }
     });
   }

@@ -2,7 +2,7 @@ import { AuthService } from 'app/seguranca/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Usuario, Permissao } from 'app/core/model';
 import { UsuarioService } from 'app/usuarios/usuario.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { Title } from '@angular/platform-browser';
@@ -33,7 +33,7 @@ export class UsuarioCadastroComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     private empresaService: EmpresaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private errorHandler: ErrorHandlerService,
     private router: Router,
@@ -72,7 +72,7 @@ export class UsuarioCadastroComponent implements OnInit {
       this.permissoes = permissoesTemp;
     }.bind(this), 1);
 
-    this.toasty.info('Permissão adicionada com sucesso');
+    this.messageService.add({ severity: 'info', detail: 'Permissão adicionada com sucesso!' });
 
   }
 
@@ -106,7 +106,7 @@ export class UsuarioCadastroComponent implements OnInit {
     this.usuarioService.adicionar(this.usuario)
       .then(func => {
         this.salvando = false;
-        this.toasty.success('Usuario cadastrado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Usuário cadastrado com sucesso!' });
         this.router.navigate(['/usuarios', func.codigo]);
 
       })
@@ -142,7 +142,7 @@ export class UsuarioCadastroComponent implements OnInit {
     this.usuarioService.atualizar(this.usuario)
       .then(() => {
         this.salvando = false;
-        this.toasty.success('Usuario atualizada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Usuário atualizado com sucesso!' });
         this.atualizaTituloEdicao();
       })
       .catch((erro) => {

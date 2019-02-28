@@ -1,18 +1,17 @@
-import { AgendaService } from './../../agendas/agenda.service';
 import { Title } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { FuncionarioService } from './../../funcionarios/funcionario.service';
-import { Laudo, Horario, Agenda, Agendamento, Aptidao } from './../../core/model';
+import { Laudo, Agendamento, Aptidao } from './../../core/model';
 import { LaudoService } from './../laudo.service';
-import { AuthService } from 'app/seguranca/auth.service';
 import { AgendamentoService } from 'app/agendamentos/agendamento.service';
 import { RelatorioService } from 'app/relatorios/relatorio.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-laudo-cadastro',
@@ -36,16 +35,15 @@ export class LaudoCadastroComponent implements OnInit {
   aptidoes = [];
   display: boolean = false;
   isAtestado: boolean = false;
+  dataExame: string;
 
   constructor(
     private funcionarioService: FuncionarioService,
     private agendamentoService: AgendamentoService,
     private laudoService: LaudoService,
-    private agendaService: AgendaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
-    private auth: AuthService,
     private router: Router,
     private title: Title,
     private relatorioService: RelatorioService
@@ -120,6 +118,8 @@ export class LaudoCadastroComponent implements OnInit {
   }
 
   deparaAgendamentoLaudo(agendamento: Agendamento, ) {
+
+    this.dataExame = moment(agendamento.agenda.diaAgenda).format('DD-MM-YYYY');
     this.laudo.funcionario = agendamento.funcionario;
     this.laudo.dataExame = agendamento.agenda.diaAgenda;
     this.laudo.observacao = agendamento.observacao;
@@ -157,7 +157,7 @@ export class LaudoCadastroComponent implements OnInit {
     this.laudoService.adicionar(this.laudo)
       .then(laudoAdicionado => {
         this.gerarLaudo(laudoAdicionado.codigo);
-        this.toasty.success('Laudo adicionado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Laudo cadastrado com sucesso!' });
         this.router.navigate(['/laudos']);
       })
       .catch(erro => this.errorHandler.handle(erro));
@@ -167,8 +167,7 @@ export class LaudoCadastroComponent implements OnInit {
     this.laudoService.atualizar(this.laudo)
       .then(laudo => {
         this.laudo = laudo;
-
-        this.toasty.success('Laudo alterado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Laudo atualizado com sucesso!' });
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

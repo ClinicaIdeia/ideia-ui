@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SenhaAlterar } from 'app/core/model';
 import { UsuarioService } from 'app/usuarios/usuario.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { Title } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ export class TrocaSenhaComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     public auth: AuthService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private errorHandler: ErrorHandlerService,
     private router: Router,
@@ -40,7 +40,7 @@ export class TrocaSenhaComponent implements OnInit {
       this.usuarioService.trocarSenha(this.senhaAlterar, this.auth.jwtPayload.cod_usuario)
         .then(() => {
           form.reset();
-          this.toasty.success('Senha alterada com sucesso. Faça novo login!');
+          this.messageService.add({ severity: 'success', detail: 'Senha alterada com sucesso. Faça novo login!' });
           this.router.navigate(['/login']);
         })
         .catch((erro) => {
@@ -48,7 +48,7 @@ export class TrocaSenhaComponent implements OnInit {
         });
 
     } else {
-      this.toasty.error('A senha de confirmação esta divergente da nova senha!');
+      this.messageService.add({ severity: 'warn', detail: 'A senha de confirmação esta divergente da nova senha!!' });
     }
 
   }

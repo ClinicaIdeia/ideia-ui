@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { FuncionarioService } from './../../funcionarios/funcionario.service';
@@ -49,7 +49,7 @@ export class AgendamentoCadastroComponent implements OnInit {
     private agendamentoService: AgendamentoService,
     private empresaService: EmpresaService,
     private agendaService: AgendaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     public auth: AuthService,
@@ -60,7 +60,7 @@ export class AgendamentoCadastroComponent implements OnInit {
   ngOnInit() {
 
     this.title.setTitle('Novo agendamento');
-    
+
     this.carregarFuncionarios();
     this.carregarMotivos();
     this.carregarHorarios();
@@ -123,24 +123,11 @@ export class AgendamentoCadastroComponent implements OnInit {
       .then(agendamentoAdicionado => {
         this.maisDeUmaEmpresa = false;
         this.empresas = [];
-        this.toasty.success('Agendamento adicionado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Agendamento cadastrado com sucesso' });
         this.router.navigate(['/agendamentos']);
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
-
-  // atualizarAgendamento(form: FormControl) {
-  //   this.agendamento.empresa = this.empresa;
-  //   this.agendamentoService.atualizar(this.agendamento)
-  //     .then(agendamento => {
-  //       this.agendamento = agendamento;
-  //       this.maisDeUmaEmpresa = false;
-  //       this.empresas = [];
-  //       this.toasty.success('Agendamento alterado com sucesso!');
-  //       this.router.navigate(['/agendamentos']);
-  //     })
-  //     .catch(erro => this.errorHandler.handle(erro));
-  // }
 
   carregarFuncionarios() {
     this.funcionarioService.pesquisarTodos()
@@ -200,7 +187,6 @@ export class AgendamentoCadastroComponent implements OnInit {
   }
 
   selecionaFuncionario() {
-    console.log(this.agendamento.funcionario);
     this.funcionarioService.buscaPorCodigo(this.agendamento.funcionario.codigo)
       .then(func => {
         if (func.empresas.length > 1) {
@@ -208,6 +194,8 @@ export class AgendamentoCadastroComponent implements OnInit {
           this.empresas = func.empresas.map(c => {
             return { label: c.nome, value: c.codigo };
           });
+        } else if (func.empresas.length === 1) {
+          this.empresa = func.empresas[0];
         }
       });
   }

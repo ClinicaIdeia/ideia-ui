@@ -1,5 +1,5 @@
 import { AuthService } from './../../seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { AgendaService, AgendaFiltro } from '../agenda.service';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { Agenda } from 'app/core/model';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-agenda-pesquisa',
@@ -30,7 +31,7 @@ export class AgendaPesquisaComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private agendaService: AgendaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title,
     private errorHandler: ErrorHandlerService
@@ -65,7 +66,7 @@ export class AgendaPesquisaComponent implements OnInit {
 
     this.agendaService.copiaAgenda(this.agendaSelecionada, this.rangeDates)
       .then(resultado => {
-        this.toasty.success('Agenda copiada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Agenda copiada com sucesso!' });
         this.display = false;
         this.rangeDates = [];
         this.pesquisar();
@@ -77,11 +78,11 @@ export class AgendaPesquisaComponent implements OnInit {
 
     this.filtro.pagina = pagina;
     this.agendaService.filtrar(this.filtro)
-    .then(resultado => {
-      this.totalRegistros = resultado.total;
-      this.agendas = resultado.agendas;
-    })
-    .catch(erro => this.errorHandler.handle(erro));
+      .then(resultado => {
+        this.totalRegistros = resultado.total;
+        this.agendas = resultado.agendas;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
@@ -93,9 +94,42 @@ export class AgendaPesquisaComponent implements OnInit {
     this.confirmation.confirm({
       message: 'Deseja excluir este registro ?',
       accept: () => {
-        this.toasty.info('Resgistro excluido com sucesso!');
+        this.messageService.add({ severity: 'info', detail: 'Registro excluído com sucesso!' });
       }
     });
+  }
+
+  checkDate(envent: Event) {
+
+    const dtaInicio = this.rangeDates[0];
+    if (dtaInicio !== null && !this.validaData(dtaInicio)) {
+      this.messageService.add({ severity: 'error', detail: 'Data de Início da cópia é inválido!' });
+    } else {
+      this.validaSeDataEMenorQueHoje(dtaInicio, 'Data de Iníco de Cópia não pode ser menor que hoje!', false);
+    }
+
+    const dtaFim = this.rangeDates[1];
+    if (dtaFim !== null && !this.validaData(dtaFim)) {
+      this.messageService.add({ severity: 'error', detail: 'Data de Fim da cópia é inválido!' });
+    } else {
+      this.validaSeDataEMenorQueHoje(dtaFim, 'Período de datas de Cópia não podem ser menor que hoje!', true);
+    }
+
+  }
+
+  validaSeDataEMenorQueHoje(diaAgenda: Date, msg: string, isDtaFim: boolean) {
+    var now = moment().format('YYYY-MM-DD');
+    var dia = moment(diaAgenda).format('YYYY-MM-DD');
+    if (now > dia) {
+      if (isDtaFim) {
+        this.rangeDates = [];
+      }
+      this.messageService.add({ severity: 'error', detail: msg });
+    }
+  }
+
+  validaData(str) {
+    return !!new Date(str).getTime();
   }
 
 }

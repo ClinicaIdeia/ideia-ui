@@ -10,7 +10,8 @@ import { CommonModule } from '@angular/common';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
 import { SidebarModule } from 'primeng/components/sidebar/sidebar';
-import { ToastyModule } from 'ng2-toasty';
+import { GrowlModule } from 'primeng/components/growl/growl';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { JwtHelper } from 'angular2-jwt';
 
 import { AuthService } from './../seguranca/auth.service';
@@ -31,7 +32,7 @@ import { RelatorioService } from 'app/relatorios/relatorio.service';
     SidebarModule,
     RouterModule,
 
-    ToastyModule.forRoot(),
+    GrowlModule,
     ConfirmDialogModule,
   ],
   declarations: [
@@ -41,7 +42,7 @@ import { RelatorioService } from 'app/relatorios/relatorio.service';
   ],
   exports: [
     NavbarComponent,
-    ToastyModule,
+    GrowlModule,
     ConfirmDialogModule
   ],
   providers: [
@@ -55,6 +56,7 @@ import { RelatorioService } from 'app/relatorios/relatorio.service';
     RelatorioService,
     ErrorHandlerService,
     AuthService,
+    MessageService,
 
     ConfirmationService,
     JwtHelper,

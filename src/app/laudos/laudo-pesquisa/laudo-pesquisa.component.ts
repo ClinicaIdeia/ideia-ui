@@ -1,5 +1,5 @@
-import { AuthService } from './../../seguranca/auth.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
+
 import { LaudoService, LaudoFiltro } from '../laudo.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
@@ -8,6 +8,7 @@ import { RelatorioService } from 'app/relatorios/relatorio.service';
 import { Laudo } from 'app/core/model';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { AuthService } from 'app/seguranca/auth.service';
 
 @Component({
   selector: 'app-laudo-pesquisa',
@@ -26,11 +27,11 @@ export class LaudoPesquisaComponent implements OnInit {
   pt: any;
 
   constructor(
-    private auth: AuthService,
     private laudoService: LaudoService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title,
+    public auth: AuthService,
     private relatorioService: RelatorioService,
     private errorHandler: ErrorHandlerService
   ) { }
@@ -54,11 +55,11 @@ export class LaudoPesquisaComponent implements OnInit {
 
     this.filtro.pagina = pagina;
     this.laudoService.pesquisar(this.filtro)
-    .then(resultado => {
-      this.totalRegistros = resultado.total;
-      this.laudos = resultado.laudos;
-    })
-    .catch(erro => this.errorHandler.handle(erro));
+      .then(resultado => {
+        this.totalRegistros = resultado.total;
+        this.laudos = resultado.laudos;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
@@ -88,7 +89,7 @@ export class LaudoPesquisaComponent implements OnInit {
     this.laudoService.excluir(laudo.codigo)
       .then(() => {
         this.pesquisar();
-        this.toasty.success('Laudo excluído com sucesso!');
+        this.messageService.add({ severity: 'info', detail: 'Laudo excluído com sucesso!' });
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

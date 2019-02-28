@@ -80,8 +80,8 @@
             <button pButton icon="fa-copy" pTooltip="Copiar agenda" tooltipPosition="top" (click)="showDialog(age)"
               [disabled]="!auth.temPermissao('ROLE_ADMIN')"></button>
 
-              <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(age)"
-              [disabled]="!auth.temPermissao('ROLE_ADMIN')"></button>
+              <!-- <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(age)"
+              [disabled]="!auth.temPermissao('ROLE_ADMIN')"></button> -->
 
           </ng-template>
         </p-column>
@@ -110,6 +110,7 @@
         <p-calendar [(ngModel)]="rangeDates" 
                     dateFormat="dd/mm/yy" 
                     name="rangeDatesAgenda" 
+                    (onSelect)="checkDate($event)"
                     selectionMode="range" 
                     readonlyInput="true">
         </p-calendar>

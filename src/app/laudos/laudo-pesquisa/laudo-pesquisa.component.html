@@ -19,7 +19,8 @@
       </div> -->
 
       <div class="ui-g-12">
-        <label style="display: block">Laudos emitidos de: </label>
+        <label style="display: block">Opa
+          Laudos emitidos de: </label>
         <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataLaudoDe" [(ngModel)]="filtro.dataLaudoDe"></p-calendar>
 
         <label>até</label>
@@ -42,18 +43,17 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable [value]="laudos" 
-                  emptyMessage="Nenhum laudo encontrado" 
-                  [paginator]="true"
-                  [responsive]="true" 
-                  [rows]="filtro.itensPorPagina" 
-                  [lazy]="true"
-                  [totalRecords]="totalRegistros" 
-                  (onLazyLoad)="aoMudarPagina($event)" 
-                  #tabela >
-        <p-column field="codigo" header="Codigo"></p-column>
-        <p-column field="funcionario.nome" header="Func"></p-column>
-        <p-column field="observacao" header="Observação"></p-column>
+      <p-dataTable  [value]="laudos" 
+                    [paginator]="true"
+                    [responsive]="true" 
+                    [rows]="filtro.itensPorPagina" 
+                    [lazy]="true"
+                    [totalRecords]="totalRegistros" 
+                    (onLazyLoad)="aoMudarPagina($event)" 
+                    #tabela >
+          <p-column field="codigo" header="Codigo"></p-column>
+          <p-column field="funcionario.nome" header="Func"></p-column>
+          <p-column field="observacao" header="Observação"></p-column>
 
         <p-column styleClass="col-acoes2" header="Ações">
             <ng-template pTemplate="body" let-laudo="rowData">

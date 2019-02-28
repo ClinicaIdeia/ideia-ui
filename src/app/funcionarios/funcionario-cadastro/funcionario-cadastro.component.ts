@@ -1,6 +1,6 @@
 import { AuthService } from 'app/seguranca/auth.service';
 import { Empresa, Endereco } from 'app/core/model';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Funcionario } from './../../core/model';
@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { Title } from '@angular/platform-browser';
 import { EmpresaService } from 'app/empresas/empresa.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-funcionario-cadastro',
@@ -59,7 +60,7 @@ export class FuncionarioCadastroComponent implements OnInit {
   constructor(
     private funcionarioService: FuncionarioService,
     private empresaService: EmpresaService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private errorHander: ErrorHandlerService,
     private router: Router,
@@ -112,7 +113,7 @@ export class FuncionarioCadastroComponent implements OnInit {
       this.funcionario.urlAnexo = urlAnexo;
       this.atualizaFuncionario(null);
     }
-    
+
   }
 
   carregarFuncionario(codigo: number) {
@@ -124,7 +125,7 @@ export class FuncionarioCadastroComponent implements OnInit {
         }
         if (this.funcionario.empresas) {
           const tmg = this.funcionario.empresas.length;
-          const emp = this.funcionario.empresas[tmg-1];
+          const emp = this.funcionario.empresas[tmg - 1];
           this.codEmpresa = emp.codigo;
         }
         this.atualizaTituloEdicao();
@@ -164,10 +165,11 @@ export class FuncionarioCadastroComponent implements OnInit {
   }
 
   adicionarFuncionario(form: FormControl) {
-    
+
     this.funcionarioService.adicionar(this.funcionario)
       .then(func => {
-        this.toasty.success('Funcionario adicionado com sucesso!');
+        const msg = 'Funcionário cadastrado com sucesso!';
+        this.messageService.add({ severity: 'success', detail: msg })
         this.router.navigate(['/funcionarios', func.codigo]);
 
       })
@@ -177,6 +179,26 @@ export class FuncionarioCadastroComponent implements OnInit {
         this.funcionario.empresas.splice(index, 1);
         this.errorHander.handle(erro);
       });
+  }
+
+  checkDate(envent: Event) {
+    if (!this.validaData(this.funcionario.dataNascimento)) {
+      this.messageService.add({ severity: 'error', detail: 'Data com formato inválido!!!' });
+    }
+    this.validaSeDataEMaiorQueHoje(this.funcionario.dataNascimento);
+  }
+
+  validaSeDataEMaiorQueHoje(dataNascimento: string) {
+    var now = moment();
+    var nascimento = moment(dataNascimento);
+    if (nascimento > now) {
+      this.funcionario.dataNascimento = null;
+      this.messageService.add({ severity: 'error', detail: 'Data de nascimento maior que hoje!' });
+    }
+  }
+
+  validaData(str) {
+    return !!new Date(str).getTime();
   }
 
   novo(form: FormControl) {
@@ -192,7 +214,7 @@ export class FuncionarioCadastroComponent implements OnInit {
 
     this.funcionarioService.atualizar(this.funcionario)
       .then(() => {
-        this.toasty.success('Funcionário atualizado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Funcionário atualizado com sucesso!' })
         this.atualizaTituloEdicao();
       })
       .catch((erro) => {

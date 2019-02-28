@@ -47,6 +47,7 @@
           <p-inputMask  mask="99/99/9999"
                         type="text"
                         name="dataNascimento"
+                        (onBlur)="checkDate($event)"
                         [(ngModel)]="funcionario.dataNascimento"
                         ngModel
                         #dataNascimento="ngModel"
@@ -80,12 +81,10 @@
                         [(ngModel)]="funcionario.telefoneFixo"
                         ngModel
                         #telefoneFixo="ngModel"></p-inputMask>
-          <!-- <app-message [control]="telefoneFixo" error="required" text="Informe o telefoneFixo"></app-message> -->
         </div>
   
         <div class="ui-g-12 ui-md-3 ui-fluid">
           <label>E-mail</label>
-          <!-- {{ contatoEmail | json }} -->
           <input  pInputText
                   type="email"
                   name="email"

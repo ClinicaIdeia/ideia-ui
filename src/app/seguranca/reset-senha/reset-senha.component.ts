@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { SenhaReiniciar } from 'app/core/model';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class ResetSenhaComponent implements OnInit {
   painel: string;
 
   constructor(
-        private toasty: ToastyService,
+        private messageService: MessageService,
         private errorHandler: ErrorHandlerService,
         private auth: AuthService,
         private router: Router
@@ -31,7 +31,7 @@ export class ResetSenhaComponent implements OnInit {
     this.auth.recuperaSenha(this.reset)
       .then(func => {
         this.salvando = false;
-        this.toasty.success('Senha recuperada com sucesso! Verifique seu e-mail.');
+        this.messageService.add({ severity: 'success', detail: 'Senha recuperada com sucesso! Verifique seu e-mail!' });
         this.router.navigate(['/login']);
 
       })

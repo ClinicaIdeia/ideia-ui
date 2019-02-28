@@ -6,7 +6,6 @@ import 'rxjs/add/operator/toPromise';
 import { AuthHttp } from 'angular2-jwt';
 import * as moment from 'moment';
 import { environment } from 'environments/environment';
-import { AgendaFiltro } from 'app/agendas/agenda.service';
 
 export class AgendamentoFiltro {
   observacao: string;
