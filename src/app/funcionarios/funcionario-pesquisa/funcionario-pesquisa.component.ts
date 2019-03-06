@@ -4,6 +4,8 @@ import { FuncionarioService } from '../funcionario.service';
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/components/common/confirmationservice';
 import { Title } from '@angular/platform-browser';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { LazyLoadEvent } from 'primeng/components/common/api';
 
 @Component({
   selector: 'app-funcionario-pesquisa',
@@ -13,14 +15,16 @@ import { Title } from '@angular/platform-browser';
 export class FuncionarioPesquisaComponent implements OnInit {
 
   funcionarios = [];
-  nome: string;
-  telefone: string;
-  cpf: string;
+  totalRegistros = 0;
+  loadCompleto: boolean = true;
+  painel: string;
+  filtro = new FuncionarioFiltro();
 
   constructor(
     private funcionarioService: FuncionarioService,
     private messageService: MessageService,
     private confirmation: ConfirmationService,
+    private errorHandler: ErrorHandlerService,
     private title: Title
   ) { }
 
@@ -29,14 +33,24 @@ export class FuncionarioPesquisaComponent implements OnInit {
     this.pesquisar();
   }
 
-  pesquisar() {
-    const filtro: FuncionarioFiltro = {
-      nome: this.nome,
-      telefone: this.telefone,
-      cpf: this.cpf,
-    }
-    this.funcionarioService.pesquisar(filtro)
-      .then(funcionarios => this.funcionarios = funcionarios);
+  pesquisar(pagina = 0) {
+    this.filtro.pagina = pagina;
+    this.funcionarioService.pesquisar(this.filtro)
+    .then(resultado => {
+      this.totalRegistros = resultado.total;
+      this.funcionarios = resultado.funcionarios;
+      this.loadCompleto = false;
+    })
+    .catch(erro => {
+      this.errorHandler.handle(erro);
+      this.loadCompleto = false;
+    });
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+    const pagina = event.first / event.rows;
+    this.loadCompleto = true;
+    this.pesquisar(pagina);
   }
 
   excluir() {

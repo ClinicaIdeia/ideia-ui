@@ -49,6 +49,19 @@ label {
   text-align: center;
 }
 
+.Col-func-nome {
+  width: 400px;
+}
+
+.Col-func-cargo {
+  width: 300px;
+}
+
+.Col-func-cpf {
+  width: 145px;
+  text-align: center;
+}
+
 .Col-Acoes-Empresa {
   width: 250px;
   text-align: center;
@@ -78,4 +91,8 @@ label {
 
 .MaxExpand {
   width: 150px !important;
+}
+
+.Container-expand {
+  min-width: 80%;
 }

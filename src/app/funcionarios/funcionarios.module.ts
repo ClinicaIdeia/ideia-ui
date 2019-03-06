@@ -13,6 +13,8 @@ import { ButtonModule } from 'primeng/components/button/button';
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { FileUploadModule } from 'primeng/components/fileupload/fileupload';
 import { SharedModule } from '../shared/shared.module';
+import { BlockUIModule } from 'primeng/components/blockui/blockui';
+import { ProgressSpinnerModule } from 'primeng/components/progressspinner/progressspinner';
 import { FuncionarioPesquisaComponent } from './funcionario-pesquisa/funcionario-pesquisa.component';
 import { FuncionarioCadastroComponent } from './funcionario-cadastro/funcionario-cadastro.component';
 import { FuncionariosRoutingModule } from './funcionarios-routing.module';
@@ -30,6 +32,8 @@ import { FuncionariosRoutingModule } from './funcionarios-routing.module';
     SelectButtonModule,
     DropdownModule,
     InputMaskModule,
+    BlockUIModule,
+    ProgressSpinnerModule,
     FileUploadModule,
     
     SharedModule,

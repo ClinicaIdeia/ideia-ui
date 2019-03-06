@@ -4,12 +4,14 @@ import 'rxjs/add/operator/toPromise';
 import { Funcionario, Endereco } from 'app/core/model';
 import { AuthHttp } from 'angular2-jwt';
 import { environment } from 'environments/environment';
-import * as moment from 'moment';
+import { URLSearchParams } from '@angular/http';
 
-export interface FuncionarioFiltro {
+export class FuncionarioFiltro {
   nome: string;
   telefone: string;
   cpf: string;
+  pagina = 0;
+  itensPorPagina = 5;
 }
 
 @Injectable()
@@ -30,6 +32,9 @@ export class FuncionarioService {
   pesquisar(filtro: FuncionarioFiltro): Promise<any> {
     const params = new URLSearchParams();
 
+    params.set('page', filtro.pagina.toString());
+    params.set('size', filtro.itensPorPagina.toString());
+
     if (filtro.nome) {
       params.set('nome', filtro.nome);
     }
@@ -40,10 +45,19 @@ export class FuncionarioService {
       params.set('cpf', filtro.cpf);
     }
 
-    return this.http.get(`${this.funcionariosUrl}`,
-      { search: filtro })
+    return this.http.get(`${this.funcionariosUrl}`, { search: params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const responseJson = response.json();
+        const funcionarios = responseJson.content;
+
+        const resultado = {
+          funcionarios,
+          total: responseJson.totalElements
+        };
+
+        return resultado;
+      })
   }
 
   adicionar(funcionario: Funcionario): Promise<Funcionario> {
@@ -84,9 +98,12 @@ export class FuncionarioService {
 
   pesquisarTodos(): Promise<any> {
 
-    return this.http.get(`${this.funcionariosUrl}`)
+    return this.http.get(`${this.funcionariosUrl}/todos`)
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const funcs = response.json();
+        return funcs;
+      });
   }
 
   carregarEndereco(cep: string): Promise<Endereco> {

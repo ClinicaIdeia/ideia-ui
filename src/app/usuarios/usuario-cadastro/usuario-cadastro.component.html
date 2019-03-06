@@ -35,22 +35,6 @@
         <app-message [control]="userEmail" error="email" text="Informe um e-mail válido"></app-message>
       </div>
 
-      <!-- <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN')">
-        <label>Usuário examinador ? </label>
-        <p-checkbox [(ngModel)]="usuario.examinador" name="examinador" binary="true"></p-checkbox>
-      </div>
-
-      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN') && usuario.examinador">
-        <label>Conselho</label>
-        <p-dropdown name="conselho" [options]="conselhos" placeholder="Selecione" [autoWidth]="false" [filter]="true"
-          [(ngModel)]="usuario.conselho" ngModel #conselho="ngModel"></p-dropdown>
-      </div>
-
-      <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="auth.temPermissao('ROLE_ADMIN') && usuario.examinador">
-        <label>Número Conselho</label>
-        <input pInputText type="numeroConselho" name="numeroConselho" [(ngModel)]="usuario.numeroConselho" />
-      </div> -->
-
       <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Empresa</label>
         <p-dropdown name="empresa" [options]="empresas" placeholder="Selecione" [autoWidth]="false" [filter]="true"
