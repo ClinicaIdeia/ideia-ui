@@ -6,6 +6,7 @@ import { ConfirmationService } from 'primeng/components/common/confirmationservi
 import { Title } from '@angular/platform-browser';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LazyLoadEvent } from 'primeng/components/common/api';
+import { RelatorioService } from 'app/relatorios/relatorio.service';
 
 @Component({
   selector: 'app-funcionario-pesquisa',
@@ -22,6 +23,7 @@ export class FuncionarioPesquisaComponent implements OnInit {
 
   constructor(
     private funcionarioService: FuncionarioService,
+    private relatorioService: RelatorioService,
     private messageService: MessageService,
     private confirmation: ConfirmationService,
     private errorHandler: ErrorHandlerService,
@@ -36,15 +38,15 @@ export class FuncionarioPesquisaComponent implements OnInit {
   pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
     this.funcionarioService.pesquisar(this.filtro)
-    .then(resultado => {
-      this.totalRegistros = resultado.total;
-      this.funcionarios = resultado.funcionarios;
-      this.loadCompleto = false;
-    })
-    .catch(erro => {
-      this.errorHandler.handle(erro);
-      this.loadCompleto = false;
-    });
+      .then(resultado => {
+        this.totalRegistros = resultado.total;
+        this.funcionarios = resultado.funcionarios;
+        this.loadCompleto = false;
+      })
+      .catch(erro => {
+        this.errorHandler.handle(erro);
+        this.loadCompleto = false;
+      });
   }
 
   aoMudarPagina(event: LazyLoadEvent) {
@@ -60,6 +62,15 @@ export class FuncionarioPesquisaComponent implements OnInit {
         this.messageService.add({ severity: 'info', detail: 'Registro excluído com sucesso!' });
       }
     });
+  }
+
+  imprimirCadastro(codigo: number) {
+    this.relatorioService.impressaoCadastro(codigo)
+      .then(cadastro => {
+        const url = window.URL.createObjectURL(cadastro);
+
+        window.open(url);
+      });
   }
 
 }

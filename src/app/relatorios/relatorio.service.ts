@@ -49,5 +49,12 @@ export class RelatorioService {
       .then(response => response.blob());
   }
 
+  impressaoCadastro(codigo: number) {
+    return this.http.get(`${this.relatoriosUrl}/funcionario/${codigo}`,
+      { responseType: ResponseContentType.Blob })
+      .toPromise()
+      .then(response => response.blob());
+  }
+
 }
 

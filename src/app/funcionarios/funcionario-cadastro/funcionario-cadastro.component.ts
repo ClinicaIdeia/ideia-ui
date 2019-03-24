@@ -189,16 +189,16 @@ export class FuncionarioCadastroComponent implements OnInit {
   }
 
   validaSeDataEMaiorQueHoje(dataNascimento: string) {
-    var now = moment();
-    var nascimento = moment(dataNascimento);
-    if (nascimento > now) {
+    moment.locale('pt-BR')
+    if (moment(dataNascimento, ['DD/MM/YYYY']).isAfter(moment())) {
       this.funcionario.dataNascimento = null;
       this.messageService.add({ severity: 'error', detail: 'Data de nascimento maior que hoje!' });
     }
   }
 
   validaData(str) {
-    return !!new Date(str).getTime();
+    moment.locale('pt-BR')
+    return moment(str, ['DD/MM/YYYY']).isValid();
   }
 
   novo(form: FormControl) {
