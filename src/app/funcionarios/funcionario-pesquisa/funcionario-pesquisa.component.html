@@ -64,7 +64,7 @@
         <p-column styleClass="col-acoes">
           <ng-template pTemplate="body" let-func="rowData">
             <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/funcionarios', func.codigo]"></a>
-            <a pButton icon="fa-print" pTooltip="Imprimir Cadastro" tooltipPosition="top" (click)="imprimirCadastro(func.codigo)"></a>
+            <a pButton icon="fa-print" pTooltip="Imprimir Cadastro" tooltipPosition="top" (click)="imprimirCadastro(func.codigo)" *ngIf="auth.temPermissao('ROLE_ADMIN')"></a>
             <!-- <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="excluir()" [disabled]="!auth.temPermissao('ROLE_REMOVER_FUNCIONARIO')"></button> -->
           </ng-template>
         </p-column>

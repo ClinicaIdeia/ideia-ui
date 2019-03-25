@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { RelatorioService } from 'app/relatorios/relatorio.service';
+import { AuthService } from 'app/seguranca/auth.service';
 
 @Component({
   selector: 'app-funcionario-pesquisa',
@@ -27,7 +28,8 @@ export class FuncionarioPesquisaComponent implements OnInit {
     private messageService: MessageService,
     private confirmation: ConfirmationService,
     private errorHandler: ErrorHandlerService,
-    private title: Title
+    private title: Title,
+    public auth: AuthService
   ) { }
 
   ngOnInit() {
