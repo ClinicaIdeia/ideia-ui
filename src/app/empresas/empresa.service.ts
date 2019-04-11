@@ -80,9 +80,12 @@ export class EmpresaService {
 
   pesquisarTodas(): Promise<any> {
 
-    return this.http.get(this.empresasUrl)
+    return this.http.get(`${this.empresasUrl}/todas`)
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => {
+        const empresas = response.json();
+        return empresas
+      });
   }
 
   buscaPorCodigo(codigo: number): Promise<Empresa> {
