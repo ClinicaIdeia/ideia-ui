@@ -88,20 +88,17 @@
         <app-message [control]="horaExame" error="required" text="O campo Horário é obrigatório"></app-message>
       </div>      
 
-      <div class="ui-g-12 ui-md-3 ui-fluid">
+      <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Funcionário<span style="color: red;">*</span></label>
-        <p-dropdown name="funcionario" 
-                    [options]="funcionarios" 
-                    placeholder="Selecione" 
-                    [autoWidth]="false" 
-                    [filter]="true"
-                    [(ngModel)]="agendamento.funcionario.codigo"
-                    (onChange)="selecionaFuncionario()"
-                    required
-                    ngModel
-                    #funcionario="ngModel">
-        </p-dropdown>
-        <app-message [control]="funcionario" error="required" text="O campo Funcionário é obrigatório"></app-message>
+        <p-autoComplete [(ngModel)]="agendamento.funcionario" 
+                        name="funcionario" 
+                        ngModel #funcionario="ngModel" 
+                        [suggestions]="filteredFuncionariosSingle"
+                        (completeMethod)="filteredFuncionarioSingle($event)" 
+                        field="nome" [size]="30" 
+                        placeholder="Digite o nome do Funcionário para buscar."
+                        [minLength]="1"></p-autoComplete>
+
       </div>
 
       <div  class="ui-g-12 ui-md-3 ui-fluid" *ngIf="maisDeUmaEmpresa">

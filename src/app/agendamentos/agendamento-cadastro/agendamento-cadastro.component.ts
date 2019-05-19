@@ -43,6 +43,7 @@ export class AgendamentoCadastroComponent implements OnInit {
   empresas = [];
   codEmpresa: number;
   codigoFunc: number;
+  filteredFuncionariosSingle: any[];
 
   constructor(
     private funcionarioService: FuncionarioService,
@@ -60,10 +61,27 @@ export class AgendamentoCadastroComponent implements OnInit {
   ngOnInit() {
 
     this.title.setTitle('Novo agendamento');
-
-    this.carregarFuncionarios();
     this.carregarMotivos();
     this.carregarHorarios();
+  }
+
+  filteredFuncionarioSingle(event) {
+    let query = event.query;
+    this.funcionarioService.listarTodosAutoComplete(event.query)
+      .then(funcionarios => {
+        this.filteredFuncionariosSingle = this.filterFuncionarioName(query, funcionarios);
+      });
+  }
+
+  filterFuncionarioName(query, funcionarios: any[]): any[] {
+    let filtered: any[] = [];
+    for (let i = 0; i < funcionarios.length; i++) {
+      let funcionario = funcionarios[i];
+      if (funcionario.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(funcionario);
+      }
+    }
+    return filtered;
   }
 
   selectHorario(event) {
@@ -125,15 +143,6 @@ export class AgendamentoCadastroComponent implements OnInit {
         this.empresas = [];
         this.messageService.add({ severity: 'success', detail: 'Agendamento cadastrado com sucesso' });
         this.router.navigate(['/agendamentos']);
-      })
-      .catch(erro => this.errorHandler.handle(erro));
-  }
-
-  carregarFuncionarios() {
-    this.funcionarioService.pesquisarTodos()
-      .then(funcionarios => {
-        this.funcionarios = funcionarios
-          .map(p => ({ label: p.nome, value: p.codigo }));
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

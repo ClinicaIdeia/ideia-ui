@@ -116,4 +116,13 @@ export class FuncionarioService {
       });
   }
 
+  listarTodosAutoComplete(nome: string): Promise<any> {
+    return this.http.get(`${this.funcionariosUrl}/auto-complete?nome=${nome}`)
+      .toPromise()
+      .then(response => {
+        const atletas = response.json();
+        return atletas;
+      });
+  }
+
 }

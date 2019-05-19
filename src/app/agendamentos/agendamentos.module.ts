@@ -13,6 +13,7 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { SelectButtonModule } from 'primeng/components/selectbutton/selectbutton';
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { SharedModule } from '../shared/shared.module';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
 import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
@@ -28,6 +29,7 @@ import { InputMaskModule } from 'primeng/components/inputmask/inputmask';
     InputTextareaModule,
     CalendarModule,
     SelectButtonModule,
+    AutoCompleteModule,
     DropdownModule,
     CheckboxModule,
     InputMaskModule,
