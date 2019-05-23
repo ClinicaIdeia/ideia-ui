@@ -9,6 +9,8 @@ import { Laudo } from 'app/core/model';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { AuthService } from 'app/seguranca/auth.service';
+import { EmpresaService } from 'app/empresas/empresa.service';
+import { FuncionarioService } from 'app/funcionarios/funcionario.service';
 
 @Component({
   selector: 'app-laudo-pesquisa',
@@ -20,16 +22,20 @@ export class LaudoPesquisaComponent implements OnInit {
   @ViewChild('tabela') grid;
   laudos = [];
   contatos = [];
+  empresas = [];
   display = false;
   filtro = new LaudoFiltro();
   laudoSelecionado = new Laudo();
   totalRegistros = 0;
   pt: any;
+  filteredFuncionariosSingle: any[];
 
   constructor(
     private laudoService: LaudoService,
     private messageService: MessageService,
     private confirmation: ConfirmationService,
+    private empresaService: EmpresaService,
+    private funcionarioService: FuncionarioService,
     private title: Title,
     public auth: AuthService,
     private relatorioService: RelatorioService,
@@ -39,6 +45,7 @@ export class LaudoPesquisaComponent implements OnInit {
   ngOnInit() {
     this.title.setTitle('Pesquisa de Laudos');
     this.pesquisar();
+    this.carregarEmpresas();
     this.pt = {
       firstDayOfWeek: 0,
       dayNames: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
@@ -49,6 +56,10 @@ export class LaudoPesquisaComponent implements OnInit {
       today: 'Hoje',
       clear: 'Limpar'
     };
+  }
+
+  selecionaEmpresa() {
+
   }
 
   pesquisar(pagina = 0) {
@@ -101,6 +112,34 @@ export class LaudoPesquisaComponent implements OnInit {
 
         window.open(url);
       });
+  }
+
+  carregarEmpresas() {
+    this.empresaService.pesquisarTodas()
+      .then(empresas => {
+        this.empresas = empresas.map(c => {
+          return { label: c.nome, value: c.codigo };
+        });
+      });
+  }
+
+  filteredFuncionarioSingle(event) {
+    let query = event.query;
+    this.funcionarioService.listarTodosAutoComplete(event.query)
+      .then(funcionarios => {
+        this.filteredFuncionariosSingle = this.filterFuncionarioName(query, funcionarios);
+      });
+  }
+
+  filterFuncionarioName(query, funcionarios: any[]): any[] {
+    let filtered: any[] = [];
+    for (let i = 0; i < funcionarios.length; i++) {
+      let funcionario = funcionarios[i];
+      if (funcionario.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(funcionario);
+      }
+    }
+    return filtered;
   }
 
 }

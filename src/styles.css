@@ -96,3 +96,7 @@ label {
 .Container-expand {
   min-width: 80%;
 }
+
+.InputTextUpper {
+  text-transform: uppercase;
+}

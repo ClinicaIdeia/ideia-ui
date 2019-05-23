@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 import { AuthHttp } from 'angular2-jwt';
-import { Laudo } from 'app/core/model';
+import { Laudo, Funcionario } from 'app/core/model';
 import { environment } from 'environments/environment';
 import * as moment from 'moment';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 export class LaudoFiltro {
-  dataLaudoDe: Date;
-  dataLaudoAte: Date;
+  dataAgendamentoDe: Date;
+  dataAgendamentoAte: Date;
   codEmpresa: number;
-  codFuncionario: number;
+  funcionario: Funcionario;
   observacao: string;
+  motivo: string;
   pagina = 0;
   itensPorPagina = 5;
 }
@@ -51,11 +52,20 @@ export class LaudoService {
     if (filtro.observacao) {
       params.set('observacao', filtro.observacao);
     }
-    if (filtro.dataLaudoDe) {
-      params.set('dataLaudoDe', moment(filtro.dataLaudoDe).format('YYYY-MM-DD'));
+    if (filtro.motivo) {
+      params.set('motivo', filtro.motivo);
     }
-    if (filtro.dataLaudoAte) {
-      params.set('dataLaudoAte', moment(filtro.dataLaudoAte).format('YYYY-MM-DD'));
+    if (filtro.codEmpresa) {
+      params.set('codEmpresa', filtro.codEmpresa.toString());
+    }
+    if (filtro.funcionario) {
+      params.set('codFuncionario', filtro.funcionario.codigo.toString());
+    }
+    if (filtro.dataAgendamentoDe) {
+      params.set('dataAgendamentoDe', moment(filtro.dataAgendamentoDe).format('YYYY-MM-DD'));
+    }
+    if (filtro.dataAgendamentoAte) {
+      params.set('dataAgendamentoAte', moment(filtro.dataAgendamentoAte).format('YYYY-MM-DD'));
     }
     return this.http.get(`${this.laudosUrl}`,
       { search: params })

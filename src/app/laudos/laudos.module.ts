@@ -16,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TabViewModule } from 'primeng/components/tabview/tabview';
 import { PanelModule } from 'primeng/components/panel/panel';
 import { CheckboxModule } from 'primeng/components/checkbox/checkbox';
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { LaudoPesquisaComponent } from './laudo-pesquisa/laudo-pesquisa.component';
 import { LaudoCadastroComponent } from './laudo-cadastro/laudo-cadastro.component';
 
@@ -25,6 +26,7 @@ import { LaudoCadastroComponent } from './laudo-cadastro/laudo-cadastro.componen
     FormsModule,
     InputTextModule,
     ButtonModule,
+    AutoCompleteModule,
     DataTableModule,
     TooltipModule,
     InputTextareaModule,
