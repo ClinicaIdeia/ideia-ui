@@ -89,16 +89,16 @@ export class FuncionarioCadastroComponent implements OnInit {
     return this.funcionarioService.urlUploadAnexo();
   }
 
-  loadFuncionario() {
-    this.funcionarioService.buscaPorCPF(this.funcionario.cpf)
-      .then((response) => {
-        this.funcionario = response;
-        this.atualizaTituloEdicao();
-        this.router.navigate(['/funcionarios', this.funcionario.codigo]);
-      })
-      .catch((erro) => {
-      });
-  }
+  // loadFuncionario() {
+  //   this.funcionarioService.buscaPorCPF(this.funcionario.cpf)
+  //     .then((response) => {
+  //       this.funcionario = response;
+  //       this.atualizaTituloEdicao();
+  //       this.router.navigate(['/funcionarios', this.funcionario.codigo]);
+  //     })
+  //     .catch((erro) => {
+  //     });
+  // }
 
   antesUploadAnexo(event) {
     event.xhr.setRequestHeader("Authorization", "Bearer " + localStorage.getItem('token'));
