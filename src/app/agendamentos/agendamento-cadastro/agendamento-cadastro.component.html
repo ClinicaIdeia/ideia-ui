@@ -127,7 +127,7 @@
         <button pButton type="button" 
                 label="Avulso" 
                 class="ui-button-warning"  
-                (click)="agendamento.avulso = !agendamento.avulso"
+                (click)="agendamentoAvulso(f)"
                 *ngIf="auth.temPermissao('ROLE_ADMIN')"></button>
         <a routerLink="/agendamentos">Voltar para a pesquisa</a>
       </div>

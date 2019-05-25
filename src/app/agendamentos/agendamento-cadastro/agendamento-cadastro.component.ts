@@ -65,6 +65,15 @@ export class AgendamentoCadastroComponent implements OnInit {
     this.carregarHorarios();
   }
 
+  agendamentoAvulso(form: FormControl) {
+    form.reset();
+    setTimeout(function () {
+      this.agendamento = new Agendamento();
+      this.agendamento.avulso = !this.agendamento.avulso;
+    }.bind(this), 1);
+
+  }
+
   filteredFuncionarioSingle(event) {
     let query = event.query;
     this.funcionarioService.listarTodosAutoComplete(event.query)
