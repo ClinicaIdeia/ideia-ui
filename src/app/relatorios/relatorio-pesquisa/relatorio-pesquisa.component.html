@@ -14,7 +14,7 @@
         <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoFim" name="periodoFim"></p-calendar>
       </div>
 
-      <div class="ui-g-12 ui-md-6 ui-fluid">
+      <!-- <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Empresa</label>
         <p-dropdown name="empresa" 
                     [options]="empresas" 
@@ -36,7 +36,7 @@
                     [filter]="true"
                     [(ngModel)]="codFuncionario">
         </p-dropdown>
-      </div>
+      </div> -->
 
       <div class="ui-g-12">
         <button pButton type="submit" label="Gerar Relatório" [disabled]="f.invalid"></button>
