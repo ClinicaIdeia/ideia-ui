@@ -107,4 +107,13 @@ export class EmpresaService {
       });
   }
 
+  listarTodosAutoComplete(nome: string): Promise<any> {
+    return this.http.get(`${this.empresasUrl}/auto-complete?nome=${nome}`)
+      .toPromise()
+      .then(response => {
+        const atletas = response.json();
+        return atletas;
+      });
+  }
+
 }

@@ -29,7 +29,7 @@
       <div class="ui-g-12 ui-md-8 ui-fluid">
         <label>Funcionário<span style="color: red;">*</span></label>
         <p-autoComplete [(ngModel)]="filtro.funcionario" name="funcionario" ngModel #funcionario="ngModel"
-          [suggestions]="filteredFuncionariosSingle" (completeMethod)="filteredFuncionarioSingle($event)" field="nome"
+          [suggestions]="filteredFuncionariosSingle" (completeMethod)="filteredFuncionarioSingle($event)" field="nomeFuncNum"
           [size]="30" placeholder="Digite o nome do Funcionário para buscar." [minLength]="1"></p-autoComplete>
 
       </div>
@@ -58,14 +58,14 @@
       <p-dataTable [value]="laudos" [paginator]="true" [responsive]="true" [rows]="filtro.itensPorPagina" [lazy]="true"
         [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela>
 
-        <p-column field="codigo" header="Codigo"></p-column>
+        <!-- <p-column field="codigo" header="Codigo"></p-column> -->
         <!-- <p-column field="dataExame" header="Dta. Exame"></p-column> -->
         <p-column header="Data exame" styleClass="col-data">
           <ng-template let-ldo="rowData" pTemplate="body">
             <span>{{ ldo.dataExame | date:'dd/MM/yyyy' }}</span>
           </ng-template>
         </p-column>
-        <p-column styleClass="InputTextUpper" field="funcionario.nome" header="Funcionário"></p-column>
+        <p-column styleClass="InputTextUpper" field="funcionario.nomeFuncNum" header="Funcionário"></p-column>
         <p-column field="motivo.descricao" header="Motivo"></p-column>
 
         <p-column styleClass="col-acoes2" header="Ações">

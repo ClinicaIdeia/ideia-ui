@@ -55,6 +55,7 @@ export class Funcionario {
   idade: number;
   anexo: string;
   urlAnexo: string;
+  nomeFuncNum: string;
 }
 
 export class Horario {

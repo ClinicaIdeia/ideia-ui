@@ -4,26 +4,44 @@
     <form autocomplete="off" (ngSubmit)="pesquisar()">
 
       <div class="ui-g-12">
-          <h1 style="margin-top: 5px;">
-              <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Agendamentos</h1>
+        <h1 style="margin-top: 5px;">
+          <img src="assets/logo_ideia.png" style="margin-bottom: -2px;" width="91" height="35">Agendamentos</h1>
+      </div>
+
+      <div class="ui-g-12">
+        <label style="display: block">Data do exame de: </label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataExameDe"
+          [(ngModel)]="filtro.dataExameDe"></p-calendar>
+
+        <label>até</label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataExameAte"
+          [(ngModel)]="filtro.dataExameAte"></p-calendar>
+      </div>
+
+      <div class="ui-g-12">
+        <label>Pesquisar por laudos Gerados ?</label>
+        <p-checkbox [(ngModel)]="filtro.laudoGerado" name="laudoGerado" binary="true"></p-checkbox>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Funcionário</label>
+        <p-autoComplete [(ngModel)]="filtro.funcionario" name="funcionario" ngModel #funcionario="ngModel"
+          [suggestions]="filteredFuncionariosSingle" (completeMethod)="filteredFuncionarioSingle($event)" field="nomeFuncNum"
+          [size]="30" placeholder="Digite o nome do Funcionário para buscar." [minLength]="1"></p-autoComplete>
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Empresa</label>
+        <p-autoComplete [(ngModel)]="filtro.empresa" name="empresa" ngModel #empresa="ngModel"
+          [suggestions]="filteredEmpresasSingle" (completeMethod)="filteredEmpresaSingle($event)" field="nome"
+          [size]="30" placeholder="Digite o nome da Empresa para buscar." [minLength]="1"></p-autoComplete>
+
       </div>
 
       <div class="ui-g-12 ui-fluid">
         <label>Observação</label>
         <input pInputText type="text" name="observacao" [(ngModel)]="filtro.observacao">
-      </div>
-
-      <div class="ui-g-12">
-        <label style="display: block">Data do exame de: </label>
-        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataExameDe" [(ngModel)]="filtro.dataExameDe"></p-calendar>
-
-        <label>até</label>
-        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }" [locale]="pt" name="dataExameAte" [(ngModel)]="filtro.dataExameAte"></p-calendar>
-      </div>
-
-      <div class="ui-g-12">
-        <label>Pesquisar por laudos Gerados ?</label>
-          <p-checkbox [(ngModel)]="filtro.laudoGerado" name="laudoGerado" binary="true"></p-checkbox>
       </div>
 
       <div class="ui-g-12">
@@ -36,15 +54,9 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable  [value]="agendamentos" 
-                    emptyMessage="Nenhum Agendamento encontrado" 
-                    [responsive]="true" 
-                    [paginator]="true" 
-                    [rows]="filtro.itensPorPagina" 
-                    [lazy]="true"
-                    [totalRecords]="totalRegistros" 
-                    (onLazyLoad)="aoMudarPagina($event)" 
-                    #tabela >
+      <p-dataTable [value]="agendamentos" emptyMessage="Nenhum Agendamento encontrado" [responsive]="true"
+        [paginator]="true" [rows]="filtro.itensPorPagina" [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)" #tabela>
 
         <p-column header="Data exame" styleClass="col-data">
           <ng-template let-age="rowData" pTemplate="body">
@@ -61,7 +73,7 @@
           </ng-template>
         </p-column>
 
-        <p-column field="funcionario.nome" header="Funcionário"></p-column>
+        <p-column field="funcionario.nomeFuncNum" header="Funcionário"></p-column>
 
         <p-column field="motivo.descricao" header="Motivo"></p-column>
 
@@ -76,20 +88,12 @@
                     [routerLink]="['/agendamentos', age.codigo]">
             </button> -->
 
-            <button pButton 
-                    icon="fa-trash" 
-                    pTooltip="Excluir" 
-                    tooltipPosition="top" 
-                    (click)="confirmarExclusao(age)"
-                    [disabled]="!auth.temPermissao('ROLE_ADMIN')">
+            <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(age)"
+              [disabled]="!auth.temPermissao('ROLE_ADMIN')">
             </button>
 
-            <button pButton 
-                    icon="fa-file" 
-                    pTooltip="Gerar Laudo" 
-                    tooltipPosition="top"  
-                    [routerLink]="['/laudos/novo', age]"
-                    [disabled]="age.laudoGerado">
+            <button pButton icon="fa-file" pTooltip="Gerar Laudo" tooltipPosition="top"
+              [routerLink]="['/laudos/novo', age]" [disabled]="age.laudoGerado">
             </button>
           </ng-template>
         </p-column>

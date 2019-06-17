@@ -1,4 +1,4 @@
-import { Agendamento, Agenda } from './../core/model';
+import { Agendamento, Agenda, Funcionario, Empresa } from './../core/model';
 import { Injectable } from '@angular/core';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 
@@ -12,6 +12,8 @@ export class AgendamentoFiltro {
   dataExameDe: Date;
   dataExameAte: Date;
   laudoGerado: boolean;
+  empresa: Empresa;
+  funcionario: Funcionario;
   pagina = 0;
   itensPorPagina = 5;
 }
@@ -46,6 +48,13 @@ export class AgendamentoService {
     }
     if (filtro.laudoGerado) {
       params.set('laudoGerado', filtro.laudoGerado.toString());
+    }
+
+    if (filtro.empresa) {
+      params.set('codEmpresa', filtro.empresa.codigo.toString());
+    }
+    if (filtro.funcionario) {
+      params.set('codFuncionario', filtro.funcionario.codigo.toString());
     }
 
     return this.http.get(`${this.agendamentosUrl}`,

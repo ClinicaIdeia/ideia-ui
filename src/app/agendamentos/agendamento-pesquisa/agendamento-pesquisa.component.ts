@@ -6,6 +6,8 @@ import { ConfirmationService } from 'primeng/components/common/confirmationservi
 import { Title } from '@angular/platform-browser';
 import { LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { EmpresaService } from 'app/empresas/empresa.service';
+import { FuncionarioService } from 'app/funcionarios/funcionario.service';
 
 @Component({
   selector: 'app-agendamento-pesquisa',
@@ -17,6 +19,8 @@ export class AgendamentoPesquisaComponent implements OnInit {
   @ViewChild('tabela') grid;
   totalRegistros = 0;
   agendamentos = [];
+  filteredFuncionariosSingle: any[];
+  filteredEmpresasSingle: any[];
   observacao: string;
   dataExameDe: Date;
   dataExameAte: Date;
@@ -27,6 +31,8 @@ export class AgendamentoPesquisaComponent implements OnInit {
     private auth: AuthService,
     private agendamentoService: AgendamentoService,
     private errorHandler: ErrorHandlerService,
+    private empresaService: EmpresaService,
+    private funcionarioService: FuncionarioService,
     private messageService: MessageService,
     private confirmation: ConfirmationService,
     private title: Title
@@ -86,6 +92,44 @@ export class AgendamentoPesquisaComponent implements OnInit {
         this.messageService.add({ severity: 'success', detail: 'Agendamento excluído com sucesso' });
       })
       .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  filteredFuncionarioSingle(event) {
+    let query = event.query;
+    this.funcionarioService.listarTodosAutoComplete(event.query)
+      .then(funcionarios => {
+        this.filteredFuncionariosSingle = this.filterFuncionarioName(query, funcionarios);
+      });
+  }
+
+  filterFuncionarioName(query, funcionarios: any[]): any[] {
+    let filtered: any[] = [];
+    for (let i = 0; i < funcionarios.length; i++) {
+      let funcionario = funcionarios[i];
+      if (funcionario.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(funcionario);
+      }
+    }
+    return filtered;
+  }
+
+  filteredEmpresaSingle(event) {
+    let query = event.query;
+    this.empresaService.listarTodosAutoComplete(event.query)
+      .then(empresas => {
+        this.filteredEmpresasSingle = this.filterEmpresaName(query, empresas);
+      });
+  }
+
+  filterEmpresaName(query, empresas: any[]): any[] {
+    let filtered: any[] = [];
+    for (let i = 0; i < empresas.length; i++) {
+      let empresa = empresas[i];
+      if (empresa.nome.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(empresa);
+      }
+    }
+    return filtered;
   }
 
 }
