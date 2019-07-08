@@ -7,6 +7,13 @@ import { ResponseContentType, URLSearchParams } from '@angular/http';
 
 import * as moment from 'moment';
 import { AuthService } from 'app/seguranca/auth.service';
+import { Empresa, Funcionario } from 'app/core/model';
+
+
+export class relatorioFiltro {
+  empresa: Empresa;
+  funcionario: Funcionario;
+}
 
 @Injectable()
 export class RelatorioService {

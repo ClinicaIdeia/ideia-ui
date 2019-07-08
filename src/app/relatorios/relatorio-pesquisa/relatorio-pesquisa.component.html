@@ -7,36 +7,28 @@
     <form #f="ngForm" (ngSubmit)="gerar()">
       <div class="ui-g-12">
         <label>Agendamento</label>
-        <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoInicio" name="periodoInicio"></p-calendar>
+        <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoInicio" [locale]="pt" name="periodoInicio"></p-calendar>
 
         <label>até</label>
 
-        <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoFim" name="periodoFim"></p-calendar>
+        <p-calendar dateFormat="dd/mm/yy" required [inputStyle]="{ 'width': '95px'}" [(ngModel)]="periodoFim" [locale]="pt" name="periodoFim"></p-calendar>
       </div>
 
-      <!-- <div class="ui-g-12 ui-md-6 ui-fluid">
-        <label>Empresa</label>
-        <p-dropdown name="empresa" 
-                    [options]="empresas" 
-                    placeholder="Selecione" 
-                    [autoWidth]="false" 
-                    [filter]="true"
-                    [(ngModel)]="codEmpresa" 
-                    ngModel 
-                    #empresa="ngModel">
-        </p-dropdown>
-      </div>
-
-      <div class="ui-g-12 ui-md-4 ui-fluid">
+      <div class="ui-g-12 ui-md-6 ui-fluid">
         <label>Funcionário</label>
-        <p-dropdown name="funcionario" 
-                    [options]="funcionarios" 
-                    placeholder="Selecione" 
-                    [autoWidth]="false" 
-                    [filter]="true"
-                    [(ngModel)]="codFuncionario">
-        </p-dropdown>
-      </div> -->
+        <p-autoComplete [(ngModel)]="filtro.funcionario" name="funcionario" ngModel #funcionario="ngModel"
+          [suggestions]="filteredFuncionariosSingle" (completeMethod)="filteredFuncionarioSingle($event)" field="nomeFuncNum"
+          [size]="30" placeholder="Digite o nome do Funcionário para buscar." [minLength]="1"></p-autoComplete>
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Empresa</label>
+        <p-autoComplete [(ngModel)]="filtro.empresa" name="empresa" ngModel #empresa="ngModel"
+          [suggestions]="filteredEmpresasSingle" (completeMethod)="filteredEmpresaSingle($event)" field="nome"
+          [size]="30" placeholder="Digite o nome da Empresa para buscar." [minLength]="1"></p-autoComplete>
+
+      </div>
 
       <div class="ui-g-12">
         <button pButton type="submit" label="Gerar Relatório" [disabled]="f.invalid"></button>

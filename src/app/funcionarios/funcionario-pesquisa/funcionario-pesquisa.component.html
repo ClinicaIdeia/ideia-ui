@@ -30,6 +30,13 @@
 
       <div class="ui-g-12 ui-md-6 ui-fluid">
 
+        <label>N° Cadastro</label>
+        <input pInputText type="text" name="numeroCadastro" [(ngModel)]="filtro.numeroCadastro" />
+
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+
         <label>Telefone</label>
         <input pInputText type="text" name="telefone" [(ngModel)]="filtro.telefone" />
 
@@ -46,14 +53,14 @@
   <div class="ui-g">
     <div class="ui-g-12">
 
-      <p-dataTable  [value]="funcionarios" 
-                    emptyMessage="Nenhum funcionario encontrado" 
+      <p-dataTable  [value]="funcionarios"
+                    emptyMessage="Nenhum funcionario encontrado"
                     [paginator]="true"
-                    [responsive]="true" 
-                    [rows]="filtro.itensPorPagina" 
+                    [responsive]="true"
+                    [rows]="filtro.itensPorPagina"
                     [lazy]="true"
-                    [totalRecords]="totalRegistros" 
-                    (onLazyLoad)="aoMudarPagina($event)" 
+                    [totalRecords]="totalRegistros"
+                    (onLazyLoad)="aoMudarPagina($event)"
                     #tabela >
         <p-column styleClass="Col-func-nome InputTextUpper" field="nome" header="Nome"></p-column>
         <p-column styleClass="Col-func-cpf" field="cpf" mask="999.999.999-99" header="CPF"></p-column>

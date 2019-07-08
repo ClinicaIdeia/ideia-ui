@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/components/inputtext/inputtext';
 import { ButtonModule } from 'primeng/components/button/button';
 import { DropdownModule } from 'primeng/components/dropdown/dropdown';
-
+import { AutoCompleteModule } from 'primeng/components/autocomplete/autocomplete';
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 
 @NgModule({
@@ -20,6 +20,7 @@ import { CalendarModule } from 'primeng/components/calendar/calendar';
     CalendarModule,
     RelatorioRoutingModule,
     DropdownModule,
+    AutoCompleteModule,
     SharedModule
   ],
   declarations: [RelatorioPesquisaComponent],

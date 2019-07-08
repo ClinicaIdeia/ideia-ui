@@ -10,6 +10,7 @@ export class FuncionarioFiltro {
   nome: string;
   telefone: string;
   cpf: string;
+  numeroCadastro: string;
   pagina = 0;
   itensPorPagina = 5;
 }
@@ -43,6 +44,9 @@ export class FuncionarioService {
     }
     if (filtro.cpf) {
       params.set('cpf', filtro.cpf);
+    }
+    if (filtro.numeroCadastro) {
+      params.set('numeroCadastro', filtro.numeroCadastro);
     }
 
     return this.http.get(`${this.funcionariosUrl}`, { search: params })
